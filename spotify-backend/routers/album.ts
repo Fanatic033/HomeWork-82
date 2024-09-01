@@ -8,22 +8,22 @@ import {imagesUpload} from '../multer';
 const albumRouter = express.Router();
 
 
-albumRouter.get('/', async (req, res, next) => {
+albumRouter.get('/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const {artist} = req.query;
     let albums;
     if (artist) {
-      albums = await Album.find({artist: artist}).populate('artist','title image description');
+      albums = await Album.find({artist: artist}).populate('artist', 'title image description');
     } else {
       albums = await Album.find();
     }
- return res.send(albums);
+    return res.send(albums);
   } catch (e) {
     return next(e)
   }
 })
 
-albumRouter.get('/:id', async (req, res, next) => {
+albumRouter.get('/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const album = await Album.findById(req.params.id).populate('artist', 'title description image');
     if (album === null) {
@@ -35,7 +35,7 @@ albumRouter.get('/:id', async (req, res, next) => {
   }
 })
 
-albumRouter.post('/', imagesUpload.single('image'), async (req, res, next) => {
+albumRouter.post('/', imagesUpload.single('image'), async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const albumData: AlbumMutation = {
       artist: req.body.artist,

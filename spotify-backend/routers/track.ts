@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 
 const trackRouter = express.Router();
 
-trackRouter.get('/', async (req: express.Request, res: express.Response, next) => {
+trackRouter.get('/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const {album} = req.query;
     let tracks;
@@ -21,7 +21,7 @@ trackRouter.get('/', async (req: express.Request, res: express.Response, next) =
   }
 });
 
-trackRouter.post('/', async (req, res, next) => {
+trackRouter.post('/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const trackMutation: TrackMutation = {
       album: req.body.album,
