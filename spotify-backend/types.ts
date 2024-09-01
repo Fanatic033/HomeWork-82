@@ -10,3 +10,9 @@ export type AlbumMutation = {
   created_at: string;
   image: string | null;
 }
+
+export type TrackMutation = {
+  album: string;
+  title: string;
+  duration: string;
+}

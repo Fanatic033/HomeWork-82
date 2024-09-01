@@ -17,7 +17,7 @@ albumRouter.get('/', async (req, res, next) => {
     } else {
       albums = await Album.find();
     }
-    res.send(albums);
+ return res.send(albums);
   } catch (e) {
     return next(e)
   }

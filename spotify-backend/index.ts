@@ -4,6 +4,7 @@ import cors from 'cors';
 import config from './config';
 import artistRouter from './routers/artist';
 import albumRouter from './routers/album';
+import trackRouter from './routers/track';
 
 const app = express();
 const port = 8000;
@@ -13,6 +14,7 @@ app.use(express.static('public'));
 
 app.use('/artists', artistRouter)
 app.use('/albums', albumRouter)
+app.use('/tracks', trackRouter)
 
 
 const run = async () => {
