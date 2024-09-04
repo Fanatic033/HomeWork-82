@@ -1,3 +1,5 @@
+import {Model} from 'mongoose';
+
 export type ArtistMutation = {
   title: string;
   description: string;
@@ -16,3 +18,19 @@ export type TrackMutation = {
   title: string;
   duration: string;
 }
+
+
+
+export interface UserFields {
+  username: string;
+  password: string;
+  token: string
+}
+
+export interface UserMethods {
+  checkPassword(password: string): Promise<Boolean>;
+
+  generateToken(): void
+}
+
+export type UserModel = Model<UserFields, {}, UserMethods>

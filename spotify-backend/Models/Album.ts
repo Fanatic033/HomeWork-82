@@ -20,7 +20,9 @@ const AlbumSchema = new Schema({
     unique: true,
   },
   created_at: {
-    type: String,
+    type: Date,
+    default: Date.now,
+    required: true,
   },
   image: String,
 })
