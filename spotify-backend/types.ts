@@ -1,4 +1,4 @@
-import {Model} from 'mongoose';
+import mongoose, {Model} from 'mongoose';
 
 export type ArtistMutation = {
   title: string;
@@ -34,3 +34,9 @@ export interface UserMethods {
 }
 
 export type UserModel = Model<UserFields, {}, UserMethods>
+
+export interface TrackHistoryFields {
+  user: mongoose.Types.ObjectId;
+  track: mongoose.Types.ObjectId;
+  datetime: Date;
+}
