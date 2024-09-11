@@ -1,43 +1,62 @@
 import { Card, CardMedia, Typography, CardContent } from '@mui/material';
-import image from '@/assets/weeknd.jpg'
-const ArtistCard = () => {
+import * as React from "react";
+import  imageNotFound from '@/assets/image-not-found.png';
+import {API_URL} from '../../../constants.ts';
+
+interface Props {
+    title: string;
+    image: string;
+}
+
+
+
+const ArtistCard: React.FC<Props> = ({title,image}) => {
+  let cardImage = imageNotFound;
+
+if(cardImage) {
+  cardImage = `${API_URL}/${image}`
+}
     return (
         <Card
-            sx={{
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                borderRadius: '12px',
-                width: 215,
-                height: 268,
-                padding: 2,
-                textAlign: 'center',
-                boxShadow: 'none',
-                margin: '20px 40px',
-            }}
+          sx={{
+            backgroundColor: '#111212',
+            borderRadius: '12px',
+            width: 215,
+            height: 268,
+            padding: 1,
+            textAlign: 'center',
+            boxShadow: 'none',
+            margin: '30px 25px',
+            transition: 'background-color 0.3s ease',
+            '&:hover': {
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            },
+          }}
         >
             <CardMedia
                 component="img"
-                image={image}
+                image={cardImage}
                 alt="Artist"
                 sx={{
-                    width: '150px',
-                    height: '150px',
+                    width: '180px',
+                    height: '180px',
                     borderRadius: '50%',
-                    margin: '0 auto',
+                    margin: '10px auto',
                     objectFit: 'cover',
                 }}
             />
-            <CardContent sx={{ padding: '8px 0' }}>
+            <CardContent sx={{ padding: '13px 97px 1px 1px' }}>
                 <Typography
                     variant="subtitle1"
                     component="div"
                     sx={{
-                        marginTop: '40px',
+                        marginTop: '10px',
                         color: 'white',
-                        fontWeight: 700,
+                        fontWeight: 500,
                         fontSize: 16,
                     }}
                 >
-                    The Weeknd
+                    {title}
                 </Typography>
             </CardContent>
         </Card>

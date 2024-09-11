@@ -1,7 +1,8 @@
 import './App.css'
-import {Routes} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import ResponsiveAppBar from "./UI/AppToolBar.tsx";
-import ArtistCard from "./features/Artist/components/ArtistCard.tsx";
+import ArtistPage from "./features/Artist/ArtistPage.tsx";
+import Typography from '@mui/material/Typography';
 
 const App = () => (
     <>
@@ -9,9 +10,9 @@ const App = () => (
             <ResponsiveAppBar/>
         </header>
         <Routes>
-
+            <Route path={'/'} element={<ArtistPage/>}/>
+            <Route path="*" element={<Typography variant="h1">Not found</Typography>} />
         </Routes>
-        <ArtistCard/>
     </>
 );
 
