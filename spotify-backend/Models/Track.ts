@@ -20,6 +20,7 @@ const TrackSchema = new Schema({
     unique: true
   },
   duration: String,
+  track_number: Number,
 })
 
 const Track = mongoose.model('Track', TrackSchema);

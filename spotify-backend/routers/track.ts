@@ -20,9 +20,12 @@ trackRouter.get('/', async (req: express.Request, res: express.Response, next: e
         populate: {path: 'artist', select: 'title'}
       });
     } else if (album) {
-      tracks = await Track.find({album: album}).populate('album');
+      tracks = await Track.find({album: album}).populate({
+        path: 'album',
+        select: 'title artist created_at image',
+      });
     } else {
-      tracks = await Track.find().populate('album');
+      tracks = await Track.find()
     }
 
     return res.send(tracks);
@@ -31,12 +34,14 @@ trackRouter.get('/', async (req: express.Request, res: express.Response, next: e
   }
 });
 
+
 trackRouter.post('/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const trackMutation: TrackMutation = {
       album: req.body.album,
       title: req.body.title,
       duration: req.body.duration,
+      track_number: req.body.track_number
     }
     const track = new Track(trackMutation);
     await track.save();

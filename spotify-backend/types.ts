@@ -9,7 +9,7 @@ export type ArtistMutation = {
 export type AlbumMutation = {
   artist: string;
   title: string;
-  created_at: string;
+  created_at: number;
   image: string | null;
 }
 
@@ -17,6 +17,7 @@ export type TrackMutation = {
   album: string;
   title: string;
   duration: string;
+  track_number: number;
 }
 
 
