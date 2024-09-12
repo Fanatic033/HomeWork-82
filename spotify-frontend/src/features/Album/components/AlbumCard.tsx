@@ -35,7 +35,7 @@ const AlbumCard: FC<AlbumCardProps> = ({album}) => {
           },
         }}
         component={Link}
-        to={''}
+        to={`/tracks/${album._id}`}
       >
         <CardMedia
           component="img"

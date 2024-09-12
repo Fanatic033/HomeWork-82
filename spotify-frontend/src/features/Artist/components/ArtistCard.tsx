@@ -54,7 +54,6 @@ if(cardImage) {
                     variant="subtitle1"
                     component="div"
                     sx={{
-                        marginTop: '10px',
                         color: 'white',
                         fontWeight: 500,
                         fontSize: 16,

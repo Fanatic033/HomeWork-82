@@ -18,14 +18,15 @@ trackRouter.get('/', async (req: express.Request, res: express.Response, next: e
       tracks = await Track.find({album: {$in: albumId}}).populate({
         path: 'album',
         populate: {path: 'artist', select: 'title'}
-      });
+      }).sort({track_number: 1});
     } else if (album) {
       tracks = await Track.find({album: album}).populate({
         path: 'album',
+        populate: { path: 'artist', select: 'title' },
         select: 'title artist created_at image',
-      });
+      }).sort({track_number: 1});
     } else {
-      tracks = await Track.find()
+      tracks = await Track.find().sort({track_number: 1})
     }
 
     return res.send(tracks);

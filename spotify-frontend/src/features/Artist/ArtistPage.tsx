@@ -5,7 +5,6 @@ import {useEffect} from "react";
 import {fetchArtist} from "./ArtistThunks.ts";
 
 const ArtistPage = () => {
-
     const artist = useAppSelector(selectArtist);
     const dispatch = useAppDispatch();
 

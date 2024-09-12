@@ -18,5 +18,18 @@ export interface AlbumI {
 }
 
 export interface TrackI {
-
+_id: string;
+album: {
+  _id: string;
+  title: string;
+  created_at: number;
+  image: string | null;
+  artist: {
+    _id: string;
+    title: string;
+  }
+}
+title: string;
+duration: string;
+track_number: number;
 }
