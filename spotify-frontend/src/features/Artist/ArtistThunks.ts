@@ -3,8 +3,7 @@ import axiosApi from "../../axiosApi.ts";
 import {ArtistI} from "../../types.ts";
 
 
-export const fetchArtist = createAsyncThunk('artist/fetchAll',
-  async  () => {
+export const fetchArtist = createAsyncThunk<ArtistI[],void>('artist/fetchAll', async  () => {
     const {data: artists} = await  axiosApi.get<ArtistI[]>('/artists');
     return artists;
     });

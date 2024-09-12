@@ -1,14 +1,16 @@
 import {useParams} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../app/hooks.ts';
-import {selectTracks} from './TracksSlice.ts';
+import {selectTrackFetching, selectTracks} from './TracksSlice.ts';
 import {useEffect} from 'react';
 import {fetchTracks} from './TracksThunks.ts';
 import TrackCard from './components/TracksCard.tsx';
+import {CircularProgress} from '@mui/material';
 
 const TracksPage = () => {
   const {id} = useParams();
   const dispatch = useAppDispatch();
   const tracks = useAppSelector(selectTracks);
+  const loader = useAppSelector(selectTrackFetching)
 
   useEffect(() => {
     if (id) {
@@ -16,6 +18,14 @@ const TracksPage = () => {
     }
   }, [dispatch, id]);
 
+
+  if(loader) {
+    return (
+      <div style={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress color="success" />
+      </div>
+    );
+  }
   return (
     <>
         {tracks.length > 0 && (
