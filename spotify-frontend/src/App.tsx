@@ -3,6 +3,7 @@ import {Route, Routes} from "react-router-dom";
 import ResponsiveAppBar from "./UI/AppToolBar.tsx";
 import ArtistPage from "./features/Artist/ArtistPage.tsx";
 import Typography from '@mui/material/Typography';
+import AlbumsPage from './features/Album/AlbumPage.tsx';
 
 const App = () => (
     <>
@@ -11,8 +12,10 @@ const App = () => (
         </header>
         <Routes>
             <Route path={'/'} element={<ArtistPage/>}/>
+          <Route path="/albums/:id" element={<AlbumsPage />} />
             <Route path="*" element={<Typography variant="h1">Not found</Typography>} />
         </Routes>
+
     </>
 );
 

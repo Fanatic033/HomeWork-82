@@ -13,7 +13,7 @@ albumRouter.get('/', async (req: express.Request, res: express.Response, next: e
     const {artist} = req.query;
     let albums;
     if (artist) {
-      albums = await Album.find({artist: artist}).populate('artist', 'title image description');
+      albums = await Album.find({artist: artist}).populate('artist', 'title image description').sort({created_at: -1})
     } else {
       albums = await Album.find();
     }

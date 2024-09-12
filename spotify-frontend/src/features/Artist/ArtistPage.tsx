@@ -20,6 +20,7 @@ const ArtistPage = () => {
             {artist.map((artist) => (
                 <ArtistCard
                     key={artist._id}
+                    id={artist._id}
                     title={artist.title}
                     image={artist.image}
                 />

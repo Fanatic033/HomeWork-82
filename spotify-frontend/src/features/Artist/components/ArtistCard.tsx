@@ -2,15 +2,17 @@ import { Card, CardMedia, Typography, CardContent } from '@mui/material';
 import * as React from "react";
 import  imageNotFound from '@/assets/image-not-found.png';
 import {API_URL} from '../../../constants.ts';
+import {Link} from 'react-router-dom';
 
 interface Props {
     title: string;
     image: string;
+    id: string;
 }
 
 
 
-const ArtistCard: React.FC<Props> = ({title,image}) => {
+const ArtistCard: React.FC<Props> = ({title,image,id}) => {
   let cardImage = imageNotFound;
 
 if(cardImage) {
@@ -32,6 +34,8 @@ if(cardImage) {
               backgroundColor: 'rgba(255, 255, 255, 0.1)',
             },
           }}
+          component={Link}
+          to={`albums/${id}`}
         >
             <CardMedia
                 component="img"
