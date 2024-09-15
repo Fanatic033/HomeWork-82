@@ -38,7 +38,7 @@ const TracksPage = () => {
       )}
       <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
         {tracks.map(track => (
-          <TrackCard key={track._id} track={track} />
+          <TrackCard key={track._id} track={track}/>
         ))}
       </div>
     </>

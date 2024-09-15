@@ -1,29 +1,14 @@
 import express from 'express';
-import User from '../Models/User';
 import Track from '../Models/Track';
 import TrackHistory from '../Models/TrackHistory';
 import mongoose from 'mongoose';
+import {auth, RequestWithUser} from '../middleware/auth';
 
 
 const trackHistoryRouter = express.Router();
 
 
-trackHistoryRouter.post('/', async (req, res,) => {
-  const headerValue = req.get('Authorization');
-  console.log(headerValue);
-  if (!headerValue) {
-    return res.status(401).send({error: 'Authorization error'});
-  }
-
-  const [_bearer, token] = headerValue.split(' ');
-  if (!token) {
-    return res.status(401).send({error: 'Token not found'});
-  }
-
-  const user = await User.findOne({token});
-  if (!user) {
-    return res.status(401).send({error: 'Wrong Token'});
-  }
+trackHistoryRouter.post('/', auth, async (req: RequestWithUser, res,) => {
 
   const {track} = req.body;
   if (!track) {
@@ -39,7 +24,7 @@ trackHistoryRouter.post('/', async (req, res,) => {
   }
 
   const trackHistory = new TrackHistory({
-    user: user._id,
+    user: req.user!._id,
     track: track_ID._id
   })
 

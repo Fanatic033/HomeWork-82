@@ -1,17 +1,24 @@
 import {Button, Card, CardContent, Typography} from '@mui/material';
 import {FC} from 'react';
 import {TrackI} from '../../../types.ts';
-import {useAppSelector} from '../../../app/hooks.ts';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks.ts';
 import {selectUser} from '../../User/UserSlice.ts';
 import PlayCircleOutlineOutlinedIcon from '@mui/icons-material/PlayCircleOutlineOutlined';
+import {addTrackToHistory} from '../../TrackHistory/TrackHistoryThunks.ts';
 
 interface Props {
   track: TrackI;
 }
 
 const TrackCard: FC<Props> = ({track}) => {
-
+  const dispatch = useAppDispatch()
   const user = useAppSelector(selectUser)
+
+  const handleClick = () => {
+    if (user) {
+      dispatch(addTrackToHistory({track: track._id}));
+    }
+  };
   return (
     <Card
       sx={{
@@ -63,7 +70,8 @@ const TrackCard: FC<Props> = ({track}) => {
           </Typography>
         </div>
         {user ? (
-          <Button><PlayCircleOutlineOutlinedIcon sx={{color:'green',fontSize:'32px'}}/></Button>
+          <Button onClick={handleClick}><PlayCircleOutlineOutlinedIcon
+            sx={{color: 'green', fontSize: '32px'}}/></Button>
         ) : (
           <p style={{display: 'none'}}></p>
         )}
