@@ -19,26 +19,26 @@ const TracksPage = () => {
   }, [dispatch, id]);
 
 
-  if(loader) {
+  if (loader) {
     return (
-      <div style={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <CircularProgress color="success" />
+      <div style={{display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
+        <CircularProgress color="success"/>
       </div>
     );
   }
   return (
     <>
-        {tracks.length > 0 && (
-         <div style={{marginLeft: '50px'}}>
-           <h1 style={{color: 'white'}}>{tracks[0].album.artist.title}</h1>
-           <h2 style={{color: "white"}}>
-             {tracks[0].album.title}
-           </h2>
-         </div>
-        )}
-      <div style={{display: 'flex',justifyContent: 'center',flexDirection: 'column',alignItems: 'center'}}>
+      {tracks.length > 0 && (
+        <div style={{marginLeft: '50px'}}>
+          <h1 style={{color: 'white'}}>{tracks[0].album.artist.title}</h1>
+          <h2 style={{color: 'white'}}>
+            {tracks[0].album.title}
+          </h2>
+        </div>
+      )}
+      <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
         {tracks.map(track => (
-          <TrackCard key={track._id} track={track}/>
+          <TrackCard key={track._id} track={track} />
         ))}
       </div>
     </>
