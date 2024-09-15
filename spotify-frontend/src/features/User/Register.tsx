@@ -2,14 +2,24 @@ import React, {useState} from 'react';
 import {Avatar, Box, Button, Link, TextField, Typography} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {Link as NavLink, useNavigate} from 'react-router-dom';
+import {useAppDispatch, useAppSelector} from '../../app/hooks.ts';
+import {RegisterMutation} from '../../types.ts';
+import {selectRegisterError} from './UserSlice.ts';
+import {register} from './UserThunks.ts';
 
 const Register = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const error = useAppSelector(selectRegisterError)
 
-  const [state, setState] = useState({
+  const [state, setState] = useState<RegisterMutation>({
     username: '',
     password: '',
   });
+
+  const getFieldError = (fieldName: string) => {
+    return error?.errors[fieldName]?.message;
+  };
 
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,8 +33,10 @@ const Register = () => {
   const submitFormHandler = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
+      await dispatch(register(state)).unwrap();
       navigate('/');
     } catch (e) {
+      console.log(e)
     }
   };
 
@@ -59,6 +71,8 @@ const Register = () => {
             onChange={inputChangeHandler}
             fullWidth
             margin="normal"
+            error={Boolean(getFieldError('username'))}
+            helperText={getFieldError('username')}
           />
           <TextField
             required
@@ -70,13 +84,15 @@ const Register = () => {
             onChange={inputChangeHandler}
             fullWidth
             margin="normal"
+            error={Boolean(getFieldError('password'))}
+            helperText={getFieldError('password')}
           />
         </Box>
         <Button type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}}>
           Регистрация
         </Button>
-        <Link component={NavLink} to={"/login"} variant="body2" sx={{textDecoration:'none'}}>
-          <span style={{color: 'gray'}}>У вас уже есть аккаунт ?</span>  Войти в Spotify
+        <Link component={NavLink} to={'/login'} variant="body2" sx={{textDecoration: 'none'}}>
+          <span style={{color: 'gray'}}>У вас уже есть аккаунт ?</span> Войти в Spotify
         </Link>
       </Box>
     </Box>

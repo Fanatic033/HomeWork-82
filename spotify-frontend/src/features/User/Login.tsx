@@ -1,10 +1,15 @@
 import React, {useState} from 'react';
-import {Avatar, Box, Button, Link, TextField, Typography} from '@mui/material';
+import {Alert, Avatar, Box, Button, Link, TextField, Typography} from '@mui/material';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
+import {useAppDispatch, useAppSelector} from '../../app/hooks.ts';
+import {selectLoginError} from './UserSlice.ts';
+import {login} from './UserThunks.ts';
 
 
 const Login = () => {
+  const dispatch = useAppDispatch()
+  const error = useAppSelector(selectLoginError)
   const navigate = useNavigate()
 
   const [state, setState] = useState({
@@ -23,7 +28,12 @@ const Login = () => {
 
   const submitFormHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    navigate('/')
+    try {
+      await dispatch(login(state)).unwrap();
+      navigate('/')
+    } catch (e) {
+      console.log(e)
+    }
   }
 
 
@@ -47,7 +57,11 @@ const Login = () => {
       <Typography component="h1" variant="h5">
         Войти в Spotify
       </Typography>
-
+      {error && (
+        <Alert severity="error" sx={{mt: 3}}>
+          {error.error}
+        </Alert>
+      )}
       <Box component="form" onSubmit={submitFormHandler} sx={{mt: 3}}>
         <Box sx={{width: '100%', maxWidth: 400, mt: 2}}>
           <TextField
@@ -75,8 +89,8 @@ const Login = () => {
         <Button type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}}>
           Войти
         </Button>
-        <Link component={RouterLink} to={"/register"} variant="body2" sx={{textDecoration: 'none'}}>
-         <span style={{color: 'gray'}}>Нет аккаунта?</span>  Регистрация в Spotify
+        <Link component={RouterLink} to={'/register'} variant="body2" sx={{textDecoration: 'none'}}>
+          <span style={{color: 'gray'}}>Нет аккаунта?</span> Регистрация в Spotify
         </Link>
       </Box>
     </Box>
