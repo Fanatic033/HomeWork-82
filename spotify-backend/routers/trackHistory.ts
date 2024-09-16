@@ -3,6 +3,8 @@ import Track from '../Models/Track';
 import TrackHistory from '../Models/TrackHistory';
 import mongoose from 'mongoose';
 import {auth, RequestWithUser} from '../middleware/auth';
+import Album from '../Models/Album';
+import Artist from '../Models/Artist';
 
 
 const trackHistoryRouter = express.Router();
@@ -32,6 +34,45 @@ trackHistoryRouter.post('/', auth, async (req: RequestWithUser, res,) => {
 
   return res.send(trackHistory)
 })
+
+trackHistoryRouter.get('/', auth, async (req: RequestWithUser, res) => {
+  try {
+    const userId = req.user!._id;
+
+    const trackHistories = await TrackHistory.find({ user: userId }).sort({ datetime: -1 });
+
+    if (!trackHistories.length) {
+      return res.status(404).send({ error: 'No track history found' });
+    }
+
+    const trackId = trackHistories.map(history => history.track);
+
+    const tracks = await Track.find({ _id: { $in: trackId } });
+
+    const result = await Promise.all(tracks.map(async (track) => {
+      const album = await Album.findById(track.album);
+      let artist = null;
+
+      if (album) {
+        artist = await Artist.findById(album.artist);
+      }
+      return {
+        track_id: track._id,
+        trackTitle: track.title,
+        artist: artist ? {
+          artistName: artist.title,
+        } : null,
+        listenedAt: trackHistories.find(history => history.track.toString() === track._id.toString())?.datetime
+      };
+    }));
+
+    // 6. Возвращаем результат
+    res.send(result);
+
+    } catch (error) {
+    res.status(500).send({ error: 'Server error' });
+  }
+});
 
 
 export default trackHistoryRouter;

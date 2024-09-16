@@ -51,6 +51,15 @@ export interface User {
   token: string;
 }
 
+export interface TrackHistory {
+  track_id: string,
+  trackTitle: string;
+  artist: {
+    artistName: string;
+  },
+  listenedAt: string;
+}
+
 export interface ValidationError {
   errors: {
     [key: string]: {

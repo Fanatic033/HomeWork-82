@@ -1,8 +1,8 @@
-import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
+import {useAppDispatch, useAppSelector} from '../../app/hooks.ts';
 import {selectArtist, selectIsLoading} from './ArtistSlice.ts';
-import ArtistCard from "./components/ArtistCard.tsx";
-import {useEffect} from "react";
-import {fetchArtist} from "./ArtistThunks.ts";
+import ArtistCard from './components/ArtistCard.tsx';
+import {useEffect} from 'react';
+import {fetchArtist} from './ArtistThunks.ts';
 import {CircularProgress} from '@mui/material';
 
 const ArtistPage = () => {

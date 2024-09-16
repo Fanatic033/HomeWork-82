@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi';
 import {isAxiosError} from 'axios';
-import {GlobalError} from '../../types';
+import {GlobalError, TrackHistory} from '../../types';
 import {RootState} from '../../app/store.ts';
 
 
@@ -31,3 +31,18 @@ export const addTrackToHistory = createAsyncThunk<void, { track: string }, {
   }
 );
 
+export const fetchHistoryTracks = createAsyncThunk<TrackHistory[], void, { state: RootState }>(
+  'trackHistory/fetchHistoryTracks',
+  async (_, {getState}) => {
+    const token = getState().users.user?.token;
+    if (!token) {
+      throw new Error('No user token found');
+    }
+    const {data: trackHistory} = await axiosApi.get<TrackHistory[]>('/track_history', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return trackHistory;
+  }
+);

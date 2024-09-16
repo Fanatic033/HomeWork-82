@@ -4,6 +4,7 @@ import {User} from '../../types.ts';
 import Box from '@mui/material/Box';
 import {green} from '@mui/material/colors';
 import PersonIcon from '@mui/icons-material/Person';
+import {NavLink} from 'react-router-dom';
 
 interface Props {
   user: User;
@@ -27,7 +28,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
       <Menu open={isOpen} anchorEl={anchorEl} keepMounted={true} onClose={handleClose}>
         <MenuItem>Profile</MenuItem>
         <MenuItem>My Account {user.username}</MenuItem>
-        <MenuItem>Logout</MenuItem>
+        <MenuItem component={NavLink} to={'/track-history'}>Track History</MenuItem>
       </Menu>
     </Box>
   );
