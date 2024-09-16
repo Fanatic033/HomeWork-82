@@ -1,16 +1,18 @@
 import React, {useState} from 'react';
-import {Avatar, Box, Button, Link, TextField, Typography} from '@mui/material';
+import {Avatar, Box, Link, TextField, Typography} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {Link as NavLink, useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../app/hooks.ts';
 import {RegisterMutation} from '../../types.ts';
-import {selectRegisterError} from './UserSlice.ts';
+import {selectRegisterError, selectRegisterLoading} from './UserSlice.ts';
 import {register} from './UserThunks.ts';
+import {LoadingButton} from '@mui/lab';
 
 const Register = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const error = useAppSelector(selectRegisterError)
+  const btnLoading = useAppSelector(selectRegisterLoading)
 
   const [state, setState] = useState<RegisterMutation>({
     username: '',
@@ -36,7 +38,7 @@ const Register = () => {
       await dispatch(register(state)).unwrap();
       navigate('/');
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   };
 
@@ -88,9 +90,9 @@ const Register = () => {
             helperText={getFieldError('password')}
           />
         </Box>
-        <Button type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}}>
+        <LoadingButton type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}} loading={btnLoading} >
           Регистрация
-        </Button>
+        </LoadingButton>
         <Link component={NavLink} to={'/login'} variant="body2" sx={{textDecoration: 'none'}}>
           <span style={{color: 'gray'}}>У вас уже есть аккаунт ?</span> Войти в Spotify
         </Link>

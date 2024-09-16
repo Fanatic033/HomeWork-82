@@ -13,7 +13,6 @@ export const register = createAsyncThunk<User, RegisterMutation, { rejectValue: 
       if (isAxiosError(e) && e.response && e.response.status === 400) {
         return rejectWithValue(e.response.data);
       }
-
       throw e;
     }
   },

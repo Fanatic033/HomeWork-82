@@ -47,10 +47,10 @@ const trackHistorySlice = createSlice({
   },
   selectors: {
     selectHistory: (state) => state.trackHistory,
-    selectFetchingHistory: (state) => state.trackFetching,
+    selectFetchingHistory: (state) => state.HistoryFetching,
   }
 });
 
 export const trackHistoryReducer = trackHistorySlice.reducer;
 
-export const {selectHistory} = trackHistorySlice.selectors
+export const {selectHistory,selectFetchingHistory} = trackHistorySlice.selectors

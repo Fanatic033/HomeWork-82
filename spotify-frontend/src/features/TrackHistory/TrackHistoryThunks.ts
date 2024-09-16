@@ -38,11 +38,14 @@ export const fetchHistoryTracks = createAsyncThunk<TrackHistory[], void, { state
     if (!token) {
       throw new Error('No user token found');
     }
-    const {data: trackHistory} = await axiosApi.get<TrackHistory[]>('/track_history', {
+    let {data: trackHistory} = await axiosApi.get<TrackHistory[]>('/track_history', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    if (trackHistory.length === 0) {
+      trackHistory = []
+    }
     return trackHistory;
   }
 );

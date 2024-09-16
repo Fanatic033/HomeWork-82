@@ -42,7 +42,7 @@ trackHistoryRouter.get('/', auth, async (req: RequestWithUser, res) => {
     const trackHistories = await TrackHistory.find({ user: userId }).sort({ datetime: -1 });
 
     if (!trackHistories.length) {
-      return res.status(404).send({ error: 'No track history found' });
+      return res.send([])
     }
 
     const trackId = trackHistories.map(history => history.track);
@@ -66,7 +66,6 @@ trackHistoryRouter.get('/', auth, async (req: RequestWithUser, res) => {
       };
     }));
 
-    // 6. Возвращаем результат
     res.send(result);
 
     } catch (error) {

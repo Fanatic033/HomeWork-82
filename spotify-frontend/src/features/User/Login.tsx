@@ -1,15 +1,17 @@
 import React, {useState} from 'react';
-import {Alert, Avatar, Box, Button, Link, TextField, Typography} from '@mui/material';
+import {Alert, Avatar, Box, Link, TextField, Typography} from '@mui/material';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../app/hooks.ts';
-import {selectLoginError} from './UserSlice.ts';
+import {selectLoginError, selectLoginLoading} from './UserSlice.ts';
 import {login} from './UserThunks.ts';
+import {LoadingButton} from '@mui/lab';
 
 
 const Login = () => {
   const dispatch = useAppDispatch()
   const error = useAppSelector(selectLoginError)
+  const btnLoading = useAppSelector(selectLoginLoading);
   const navigate = useNavigate()
 
   const [state, setState] = useState({
@@ -32,7 +34,7 @@ const Login = () => {
       await dispatch(login(state)).unwrap();
       navigate('/')
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 
@@ -86,9 +88,9 @@ const Login = () => {
             margin="normal"
           />
         </Box>
-        <Button type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}}>
+        <LoadingButton type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}} loading={btnLoading}>
           Войти
-        </Button>
+        </LoadingButton>
         <Link component={RouterLink} to={'/register'} variant="body2" sx={{textDecoration: 'none'}}>
           <span style={{color: 'gray'}}>Нет аккаунта?</span> Регистрация в Spotify
         </Link>
