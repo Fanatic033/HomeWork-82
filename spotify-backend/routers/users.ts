@@ -1,6 +1,7 @@
 import express from 'express';
 import {Error} from 'mongoose';
 import User from '../Models/User';
+import {auth, RequestWithUser} from '../middleware/auth';
 
 
 const usersRouter = express.Router();
@@ -47,7 +48,17 @@ usersRouter.post('/sessions', async (req, res, next) => {
   }
 })
 
+usersRouter.delete('/sessions', auth, async (req: RequestWithUser, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).send({error: 'User not found'});
+    }
 
+    return res.status(204).send();
+  } catch (error) {
+    return next(error);
+  }
+})
 
 export default usersRouter;
 

@@ -49,7 +49,11 @@ export const usersSlice = createSlice({
   },
   initialState,
   name: 'users',
-  reducers: {},
+  reducers: {
+    unsetUser: (state) => {
+      state.user = null;
+    },
+  },
   selectors: {
     selectUser: (state) => state.user,
     selectRegisterLoading: (state) => state.registerLoading,
@@ -69,3 +73,5 @@ export const {
   selectLoginLoading,
   selectLoginError
 } = usersSlice.selectors;
+
+export const {unsetUser} = usersSlice.actions

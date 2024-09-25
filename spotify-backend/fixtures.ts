@@ -10,6 +10,7 @@ const run = async () => {
   const db = mongoose.connection;
 
   try {
+    await db.dropCollection('users')
     await db.dropCollection('artists');
     await db.dropCollection('albums');
     await db.dropCollection('tracks');
@@ -17,7 +18,7 @@ const run = async () => {
     console.log('Skipping drop...');
   }
 
-  const [weekendArtist, vsxPrinceArtist] = await Artist.create({
+  const [weekendArtist, vsxPrinceArtist,imagineDragons] = await Artist.create({
     title: 'The Weeknd',
     image: 'fixtures/TheWEEKND.jpg',
     description: 'Canadian singer, songwriter, and record producer.',
@@ -27,6 +28,11 @@ const run = async () => {
     image: 'fixtures/prince.jpg',
     description: 'Unique artist from KZ.',
     isPublished: true,
+  },{
+    title: 'Imagine Dragons',
+    image: 'fixtures/imagine.webp',
+    description: 'ROCK Group',
+    isPublished: false,
   });
 
   const [weekendAlbum1, weekendAlbum2] = await Album.create({
@@ -56,6 +62,14 @@ const run = async () => {
     image: 'fixtures/30.jpg',
     isPublished: true,
   });
+
+  const  imagineAlbum = await Album.create({
+    artist: imagineDragons._id,
+    title: 'Evolve',
+    created_at: 2017,
+    image: 'fixtures/evolve.jpeg',
+    isPublished: false,
+  })
 
   await Track.create({
     album: weekendAlbum1._id,
@@ -185,6 +199,26 @@ const run = async () => {
     track_number: 5,
     isPublished: true,
   });
+
+  await Track.create({
+    album:  imagineAlbum,
+    title: 'Believer',
+    duration: '3:40',
+    track_number: 1,
+    isPublished: false,
+  },{
+    album: imagineAlbum._id,
+    title: 'I dont Know Why',
+    duration: '3:50',
+    track_number: 2,
+    isPublished: false,
+  },{
+    album: imagineAlbum,
+    title: 'Rise up',
+    duration: '3:10',
+    track_number: 3,
+    isPublished: false,
+  })
 
 
 

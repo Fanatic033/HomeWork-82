@@ -5,12 +5,15 @@ import Box from '@mui/material/Box';
 import {green} from '@mui/material/colors';
 import PersonIcon from '@mui/icons-material/Person';
 import {NavLink} from 'react-router-dom';
+import {useAppDispatch} from '../../app/hooks.ts';
+import {logout} from '../../features/User/UserThunks.ts';
 
 interface Props {
   user: User;
 }
 
 const UserMenu: React.FC<Props> = ({user}) => {
+  const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const isOpen = Boolean(anchorEl);
 
@@ -22,6 +25,10 @@ const UserMenu: React.FC<Props> = ({user}) => {
     setAnchorEl(null)
   }
 
+  const handleLogout = () => {
+    dispatch(logout());
+  }
+
   return (
     <Box>
       <Avatar onClick={handleClick} sx={{bgcolor: green[500]}}><PersonIcon/></Avatar>
@@ -29,6 +36,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
         <MenuItem>Profile</MenuItem>
         <MenuItem>My Account {user.username}</MenuItem>
         <MenuItem component={NavLink} to={'/track-history'}>Track History</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </Box>
   );
