@@ -1,9 +1,9 @@
-import mongoose, {Schema, Types} from 'mongoose';
 import Artist from './Artist';
+import mongoose, {Types} from 'mongoose';
 
-const AlbumSchema = new Schema({
+const AlbumSchema = new  mongoose.Schema({
   artist: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'Artist',
     required: true,
     validate: {
@@ -24,6 +24,10 @@ const AlbumSchema = new Schema({
     required: true,
   },
   image: String,
+  isPublished: {
+    type: Boolean,
+    default: false,
+  }
 })
 
 const Album = mongoose.model('Album', AlbumSchema);

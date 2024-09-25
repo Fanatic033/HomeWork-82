@@ -14,6 +14,8 @@ const TrackHistoryPage = () => {
     dispatch(fetchHistoryTracks())
   }, [dispatch]);
 
+  const sortedTrackHistory = [...trackHistory].sort((a, b) => new Date(b.listenedAt).getTime() - new Date(a.listenedAt).getTime());
+
 
   if(loading){
     return (
@@ -23,6 +25,7 @@ const TrackHistoryPage = () => {
     )
   }
   return (
+
     <>
       <h1 style={{color: 'white', marginLeft: '50px'}}>История Прослушанных Песен</h1>
 
@@ -31,7 +34,7 @@ const TrackHistoryPage = () => {
 
       ): (
       <div style={{display: 'flex', flexDirection: 'column', textAlign: 'center', marginTop: '80px'}}>
-        {trackHistory.map((history) => (
+        {sortedTrackHistory.map((history) => (
           <TrackHistoryCard
             key={history.track_id}
             trackTitle={history.trackTitle}

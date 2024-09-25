@@ -20,153 +20,187 @@ const run = async () => {
   const [weekendArtist, vsxPrinceArtist] = await Artist.create({
     title: 'The Weeknd',
     image: 'fixtures/TheWEEKND.jpg',
-    description: 'Canadian singer, songwriter, and record producer.'
+    description: 'Canadian singer, songwriter, and record producer.',
+    isPublished: true,
   }, {
     title: 'V $ X V PRiNCE',
     image: 'fixtures/prince.jpg',
-    description: 'Unique artist from KZ.'
+    description: 'Unique artist from KZ.',
+    isPublished: true,
   });
 
   const [weekendAlbum1, weekendAlbum2] = await Album.create({
     artist: weekendArtist._id,
     title: 'After Hours',
     created_at: 2020,
-    image: 'fixtures/afterhours.jpg'
+    image: 'fixtures/afterhours.jpg',
+    isPublished: true,
   }, {
     artist: weekendArtist._id,
     title: 'Starboy',
     created_at: 2016,
-    image: 'fixtures/starboy.jpg'
+    image: 'fixtures/starboy.jpg',
+    isPublished: true,
   });
 
   const [vsxPrinceAlbum1, vsxPrinceAlbum2] = await Album.create({
     artist: vsxPrinceArtist._id,
     title: 'NOVЫЙ',
     created_at: 2022,
-    image: 'fixtures/novyi.jpg'
+    image: 'fixtures/novyi.jpg',
+    isPublished: true,
   }, {
     artist: vsxPrinceArtist._id,
     title: '30',
     created_at: 2020,
-    image: 'fixtures/30.jpg'
+    image: 'fixtures/30.jpg',
+    isPublished: true,
   });
 
   await Track.create({
     album: weekendAlbum1._id,
     title: 'Blinding Lights',
     duration: '3:20',
-    track_number: 1
+    track_number: 1,
+    isPublished: true,
   }, {
     album: weekendAlbum1._id,
     title: 'In Your Eyes',
     duration: '3:58',
-    track_number: 2
+    track_number: 2,
+    isPublished: true,
+
   }, {
     album: weekendAlbum1._id,
     title: 'Save Your Tears',
     duration: '3:35',
-    track_number: 3
+    track_number: 3,
+    isPublished: true,
   }, {
     album: weekendAlbum1._id,
     title: 'Heartless',
     duration: '3:20',
-    track_number: 4
+    track_number: 4,
+    isPublished: true,
   }, {
     album: weekendAlbum1._id,
     title: 'After Hours',
     duration: '3:43',
-    track_number: 5
+    track_number: 5,
+    isPublished: true,
   });
 
   await Track.create({
     album: weekendAlbum2._id,
     title: 'Starboy',
     duration: '3:50',
-    track_number: 1
+    track_number: 1,
+    isPublished: true,
   }, {
     album: weekendAlbum2._id,
     title: 'Party Monster',
     duration: '3:13',
-    track_number: 2
+    track_number: 2,
+    isPublished: true,
   }, {
     album: weekendAlbum2._id,
     title: 'I Feel It Coming',
     duration: '4:00',
-    track_number: 3
+    track_number: 3,
+    isPublished: true,
   }, {
     album: weekendAlbum2._id,
     title: 'Reminder',
     duration: '3:53',
-    track_number: 4
+    track_number: 4,
+    isPublished: true,
   }, {
     album: weekendAlbum2._id,
     title: 'Sidewalks',
     duration: '3:58',
-    track_number: 5
+    track_number: 5,
+    isPublished: true,
   });
 
   await Track.create({
     album: vsxPrinceAlbum1._id,
     title: 'Я так хотел',
     duration: '3:15',
-    track_number: 1
+    track_number: 1,
+    isPublished: true,
   }, {
     album: vsxPrinceAlbum1._id,
     title: '30',
     duration: '3:45',
-    track_number: 2
+    track_number: 2,
+    isPublished: true,
   }, {
     album: vsxPrinceAlbum1._id,
     title: 'Суета',
     duration: '4:00',
-    track_number: 3
+    track_number: 3,
+    isPublished: true,
   }, {
     album: vsxPrinceAlbum1._id,
     title: 'Краски',
     duration: '3:50',
-    track_number: 4
+    track_number: 4,
+    isPublished: true,
   }, {
     album: vsxPrinceAlbum1._id,
     title: 'Мой брат',
     duration: '3:25',
-    track_number: 5
+    track_number: 5,
+    isPublished: true,
   });
 
   await Track.create({
     album: vsxPrinceAlbum2._id,
     title: 'Tokyo',
     duration: '3:40',
-    track_number: 1
+    track_number: 1,
+    isPublished: true,
   }, {
     album: vsxPrinceAlbum2._id,
     title: 'Дом 50',
     duration: '3:30',
-    track_number: 2
+    track_number: 2,
+    isPublished: true,
   }, {
     album: vsxPrinceAlbum2._id,
     title: 'Су',
     duration: '4:05',
-    track_number: 3
+    track_number: 3,
+    isPublished: true,
   }, {
     album: vsxPrinceAlbum2._id,
     title: 'Мурашки',
     duration: '3:55',
-    track_number: 4
+    track_number: 4,
+    isPublished: true,
   }, {
     album: vsxPrinceAlbum2._id,
     title: 'на Пятом',
     duration: '3:50',
-    track_number: 5
+    track_number: 5,
+    isPublished: true,
   });
 
 
-  const user = new User({
-    username: 'user',
-    password: 'user',
-  });
-  user.generateToken();
-  await user.save();
 
+  await User.create({
+      username: 'user1',
+      password: 'user1',
+      token: crypto.randomUUID(),
+      role: 'user',
+    },
+    {
+      username: 'admin1',
+      password: 'admin1',
+      token: crypto.randomUUID(),
+      role: 'admin',
+    }
+  );
 
   await db.close();
 };
