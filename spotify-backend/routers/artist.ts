@@ -34,24 +34,23 @@ artistRouter.post('/', auth, imagesUpload.single('image'), async (req: express.R
     return next(e)
   }
 })
-//
-// artistRouter.patch('/:id', permit('admin'), async (req: Request, res: Response, next: NextFunction) => {
-//   const {id} = req.params;
-//   try {
-//     const artist = await Artist.findById(id);
-//     if (!artist) {
-//       return res.status(404).send({error: 'artist not found'});
-//     }
-//
-//     artist.isPublished = !artist.isPublished;
-//
-//     await artist.save();
-//
-//     return res.send(artist)
-//   } catch (e) {
-//     next(e)
-//   }
-// })
+
+artistRouter.patch('/:id/TogglePublished',auth ,permit('admin'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  try {
+    const artist = await Artist.findById(req.params.id);
+    if (!artist) {
+      return res.status(404).send({error: 'artist not found'});
+    }
+
+    artist.isPublished = !artist.isPublished;
+
+    await artist.save();
+
+    return res.send(artist)
+  } catch (e) {
+    next(e)
+  }
+})
 
 artistRouter.delete('/:id', auth, permit('admin'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {

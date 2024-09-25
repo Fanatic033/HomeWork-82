@@ -58,22 +58,21 @@ trackRouter.post('/', auth, async (req: express.Request, res: express.Response, 
 })
 
 
-// trackRouter.patch('/id', permit('admin'), async (req: Request, res: Response, next: NextFunction) => {
-//   const {id} = req.params;
-//   try {
-//     const track = Track.findById(id);
-//     if (!track) {
-//       return res.status(404).send({error: 'track not found'});
-//     }
-//
-//     track.isPublished = !track.isPublished;
-//
-//     await track.save();
-//     res.send(track)
-//   } catch (e) {
-//     next(e)
-//   }
-// })
+trackRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  try {
+    const track = await Track.findById(req.params.id);
+    if (!track) {
+      return res.status(404).send({error: 'track not found'});
+    }
+
+    track.isPublished = !track.isPublished;
+
+    await track.save();
+    res.send(track)
+  } catch (e) {
+    next(e)
+  }
+})
 
 trackRouter.delete('/:id', auth, permit('admin'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {

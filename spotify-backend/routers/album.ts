@@ -57,22 +57,25 @@ albumRouter.post('/', auth, imagesUpload.single('image'), async (req: Request, r
 })
 
 
-// albumRouter.patch('/id', permit('admin'), async (req: Request, res: Response, next: NextFunction) => {
-//   const {id} = req.params;
-//   try {
-//     const album = Album.findById(id);
-//     if (!album) {
-//       return res.status(404).send({error: 'album not found'});
-//     }
-//
-//     album.isPublished = !album.isPublished;
-//
-//     await album.save()
-//     res.send(album)
-//   } catch (e) {
-//     next(e)
-//   }
-// })
+albumRouter.patch('/:id/togglePublished',auth ,permit('admin'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  try {
+    const album = await Album.findById(req.params.id);
+    if (!album) {
+      return res.status(404).send({error: 'album not found'});
+    }
+
+    album.isPublished = !album.isPublished;
+
+    await album.save()
+    res.send(album)
+  } catch (e) {
+    next(e)
+  }
+})
+
+
+
+
 
 albumRouter.delete('/:id', auth,permit('admin') ,async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
