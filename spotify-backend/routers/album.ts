@@ -57,7 +57,7 @@ albumRouter.post('/', auth, imagesUpload.single('image'), async (req: Request, r
 })
 
 
-albumRouter.patch('/:id/togglePublished',auth ,permit('admin'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
+albumRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const album = await Album.findById(req.params.id);
     if (!album) {
@@ -74,10 +74,7 @@ albumRouter.patch('/:id/togglePublished',auth ,permit('admin'), async (req: Requ
 })
 
 
-
-
-
-albumRouter.delete('/:id', auth,permit('admin') ,async (req: RequestWithUser, res: Response, next: NextFunction) => {
+albumRouter.delete('/:id', auth, permit('admin'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const {id} = req.params;
     const album = Album.findById(id);
@@ -86,7 +83,7 @@ albumRouter.delete('/:id', auth,permit('admin') ,async (req: RequestWithUser, re
     }
     await Album.deleteOne({_id: id})
 
-    return res.send(album)
+    return res.status(204).send()
   } catch (e) {
     next(e)
   }

@@ -35,7 +35,7 @@ artistRouter.post('/', auth, imagesUpload.single('image'), async (req: express.R
   }
 })
 
-artistRouter.patch('/:id/TogglePublished',auth ,permit('admin'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
+artistRouter.patch('/:id/TogglePublished', auth, permit('admin'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const artist = await Artist.findById(req.params.id);
     if (!artist) {
@@ -61,7 +61,7 @@ artistRouter.delete('/:id', auth, permit('admin'), async (req: RequestWithUser, 
     }
     await Artist.deleteOne({_id: id})
 
-    return res.send(artist)
+    return res.status(204).send()
   } catch (e) {
     next(e)
   }

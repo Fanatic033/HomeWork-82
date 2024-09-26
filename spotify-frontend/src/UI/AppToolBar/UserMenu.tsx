@@ -30,6 +30,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
   }
 
   return (
+    <>
     <Box>
       <Avatar onClick={handleClick} sx={{bgcolor: green[500]}}><PersonIcon/></Avatar>
       <Menu open={isOpen} anchorEl={anchorEl} keepMounted={true} onClose={handleClose}>
@@ -39,6 +40,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </Box>
+    </>
   );
 };
 

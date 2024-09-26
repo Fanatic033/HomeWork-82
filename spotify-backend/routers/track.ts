@@ -83,7 +83,7 @@ trackRouter.delete('/:id', auth, permit('admin'), async (req: RequestWithUser, r
     }
     await Track.deleteOne({_id: id})
 
-    return res.send('success delete')
+    return res.status(204).send();
   } catch (e) {
     next(e)
   }

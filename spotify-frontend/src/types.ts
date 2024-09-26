@@ -2,7 +2,9 @@ export interface ArtistI {
     _id: string;
     title: string;
     image: string;
+    description: string;
 }
+export type mutationArtist = Omit<ArtistI, '_id'>
 
 export interface AlbumI {
   _id: string;
@@ -14,6 +16,13 @@ export interface AlbumI {
   }
   title: string;
   created_at: number;
+  image: string | null;
+}
+
+export interface mutationAlbum {
+  artist: string;
+  title: string;
+  created_at: string;
   image: string | null;
 }
 
@@ -32,6 +41,14 @@ album: {
 title: string;
 duration: string;
 track_number: number;
+isPublished: boolean;
+}
+
+export interface mutationTrack {
+  album:string;
+  title: string;
+  duration: string;
+  track_number: string,
 }
 
 
@@ -49,6 +66,7 @@ export interface User {
   _id: string;
   username: string;
   token: string;
+  role: string;
 }
 
 export interface TrackHistory {
