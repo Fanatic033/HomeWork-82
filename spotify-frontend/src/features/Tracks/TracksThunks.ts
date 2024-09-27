@@ -4,9 +4,15 @@ import {GlobalError, mutationTrack, TrackI} from '../../types.ts';
 import {RootState} from '../../app/store.ts';
 import {isAxiosError} from 'axios';
 
-export const fetchTracks = createAsyncThunk<TrackI[], string>('tracks/fetchTracks', async (id: string, {rejectWithValue}) => {
+export const fetchTracks = createAsyncThunk<TrackI[], string, {
+  state: RootState
+}>('tracks/fetchTracks', async (id: string, {getState, rejectWithValue}) => {
   try {
-    const {data: tracks} = await axiosApi.get<TrackI[]>(`/tracks?album=${id}`);
+    const token = getState().users.user?.token;
+    const config = token
+      ? {headers: {Authorization: `Bearer ${token}`}}
+      : {};
+    const {data: tracks} = await axiosApi.get<TrackI[]>(`/tracks?album=${id}`, config);
     return tracks;
   } catch (error) {
     return rejectWithValue(error)

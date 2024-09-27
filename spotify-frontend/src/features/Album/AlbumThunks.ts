@@ -5,15 +5,19 @@ import {RootState} from '../../app/store.ts';
 import {isAxiosError} from 'axios';
 
 
-export const fetchAlbums = createAsyncThunk<AlbumI[], string>('albums/fetchAlbums', async (id: string,{rejectWithValue}) => {
-  try {
-
-    const {data: albums} = await axiosApi.get<AlbumI[]>(`/albums?artist=${id}`)
-    return albums
-  }
-  catch(error) {
-    return rejectWithValue(error);
-  }
+export const fetchAlbums = createAsyncThunk<AlbumI[], string, {
+  state: RootState
+}>('albums/fetchAlbums', async (id: string, {getState, rejectWithValue}) => {
+    try {
+      const token = getState().users.user?.token
+      const config = token
+        ? {headers: {Authorization: `Bearer ${token}`}}
+        : {};
+      const {data: albums} = await axiosApi.get<AlbumI[]>(`/albums?artist=${id}`, config);
+      return albums
+    } catch (error) {
+      return rejectWithValue(error);
+    }
   }
 )
 

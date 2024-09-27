@@ -3,8 +3,13 @@ export interface ArtistI {
     title: string;
     image: string;
     description: string;
+    isPublished: boolean;
 }
-export type mutationArtist = Omit<ArtistI, '_id'>
+export interface mutationArtist {
+  title: string;
+  image: string;
+  description: string;
+}
 
 export interface AlbumI {
   _id: string;
@@ -17,6 +22,7 @@ export interface AlbumI {
   title: string;
   created_at: number;
   image: string | null;
+  isPublished: boolean;
 }
 
 export interface mutationAlbum {

@@ -57,6 +57,17 @@ const TrackCard: FC<Props> = ({track}) => {
           >
             {track.title}
           </Typography>
+          {user?.role === 'admin' && !track.isPublished && (
+            <Typography
+              variant="caption"
+              sx={{
+                color: 'red',
+                fontWeight: 400,
+              }}
+            >
+              Неопубликовано
+            </Typography>
+          )}
         </div>
         <div style={{flex: '0 0 20%',}}>
           <Typography

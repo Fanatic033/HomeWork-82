@@ -55,6 +55,7 @@ const ArtistPage = () => {
               id={artist._id}
               title={artist.title}
               image={artist.image}
+              isPublished={artist.isPublished}
             />
           ))}
         </div>

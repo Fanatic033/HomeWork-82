@@ -5,11 +5,17 @@ import {RootState} from '../../app/store.ts';
 import {isAxiosError} from 'axios';
 
 
-export const fetchArtist = createAsyncThunk<ArtistI[], void>('artist/fetchAll', async () => {
-  const {data: artists} = await axiosApi.get<ArtistI[]>('/artists');
-  return artists;
-});
-
+export const fetchArtist = createAsyncThunk<ArtistI[], void, { state: RootState }>(
+  'artist/fetchAll',
+  async (_, {getState}) => {
+    const token = getState().users.user?.token;
+    const config = token
+      ? {headers: {Authorization: `Bearer ${token}`}}
+      : {};
+    const {data: artists} = await axiosApi.get<ArtistI[]>('/artists', config);
+    return artists;
+  }
+);
 
 export const createArtist = createAsyncThunk<void, mutationArtist, {
   rejectValue: GlobalError, state: RootState

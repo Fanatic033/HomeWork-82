@@ -3,19 +3,24 @@ import Artist from '../Models/Artist';
 import mongoose from 'mongoose';
 import {imagesUpload} from '../multer';
 import {ArtistMutation} from '../types';
-import {auth, RequestWithUser} from '../middleware/auth';
 import permit from '../middleware/permit';
+import {publicGet, RequestUser} from '../middleware/public';
+import {auth, RequestWithUser} from '../middleware/auth';
 
 const artistRouter = express.Router();
 
-artistRouter.get('/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+artistRouter.get('/', publicGet, async (req: RequestUser, res: Response, next: NextFunction) => {
   try {
-    const artists = await Artist.find()
-    return res.send(artists)
+    const artists = req.user && req.user.role === 'admin'
+      ? await Artist.find()
+      : await Artist.find({isPublished: true});
+
+    return res.send(artists);
   } catch (e) {
-    return next(e)
+    return next(e);
   }
-})
+});
+
 
 artistRouter.post('/', auth, imagesUpload.single('image'), async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {

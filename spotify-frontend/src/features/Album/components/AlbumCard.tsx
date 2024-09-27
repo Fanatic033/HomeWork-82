@@ -5,12 +5,15 @@ import {AlbumI} from '../../../types.ts';
 import {FC} from 'react';
 import {API_URL} from '../../../constants.ts';
 import  dayjs from 'dayjs';
+import {useAppSelector} from '../../../app/hooks.ts';
+import {selectUser} from '../../User/UserSlice.ts';
 
 interface AlbumCardProps {
   album: AlbumI;
 }
 
 const AlbumCard: FC<AlbumCardProps> = ({album}) => {
+  const user = useAppSelector(selectUser)
   let cardImage = Image;
 
   if(cardImage) {
@@ -37,6 +40,17 @@ const AlbumCard: FC<AlbumCardProps> = ({album}) => {
         component={Link}
         to={`/tracks/${album._id}`}
       >
+        {user?.role === 'admin' && !album.isPublished && (
+          <Typography
+            variant="caption"
+            sx={{
+              color: 'red',
+              fontWeight: 400,
+            }}
+          >
+            Неопубликовано
+          </Typography>
+        )}
         <CardMedia
           component="img"
           image={cardImage}
@@ -61,7 +75,8 @@ const AlbumCard: FC<AlbumCardProps> = ({album}) => {
             }}
           >
             {album.title}
-          </Typography>  <Typography
+          </Typography>
+          <Typography
             variant="subtitle1"
             component="p"
             sx={{
@@ -72,6 +87,7 @@ const AlbumCard: FC<AlbumCardProps> = ({album}) => {
           >
           {formattedDate}
           </Typography>
+
         </CardContent>
       </Card>
   );

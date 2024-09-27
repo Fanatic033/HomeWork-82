@@ -1,10 +1,10 @@
-import ArtistForm from './ArtistForm.tsx';
+import ArtistForm from './components/ArtistForm.tsx';
 import {Navigate, useNavigate} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from '../../../app/hooks.ts';
-import {selectIsCreating} from '../ArtistSlice.ts';
-import {selectUser} from '../../User/UserSlice.ts';
-import {mutationArtist} from '../../../types.ts';
-import {createArtist} from '../ArtistThunks.ts';
+import {useAppDispatch, useAppSelector} from '../../app/hooks.ts';
+import {selectIsCreating} from './ArtistSlice.ts';
+import {selectUser} from '../User/UserSlice.ts';
+import {mutationArtist} from '../../types.ts';
+import {createArtist} from './ArtistThunks.ts';
 
 const AddArtist = () => {
   const navigate = useNavigate();

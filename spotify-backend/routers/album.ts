@@ -5,25 +5,30 @@ import mongoose from 'mongoose';
 import {imagesUpload} from '../multer';
 import {auth, RequestWithUser} from '../middleware/auth';
 import permit from '../middleware/permit';
+import {publicGet, RequestUser} from '../middleware/public';
 
 
 const albumRouter = express.Router();
 
 
-albumRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
+albumRouter.get('/', publicGet, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const {artist} = req.query;
+    const user = (req as RequestUser).user;
     let albums;
+    const publishedFilter = user && user.role === 'admin' ? {} : {isPublished: true};
+
     if (artist) {
-      albums = await Album.find({artist: artist}).populate('artist', 'title image description').sort({created_at: -1})
+      albums = await Album.find({artist: artist, ...publishedFilter}).populate('artist', 'title image description').sort({created_at: -1})
     } else {
-      albums = await Album.find();
+      albums = await Album.find({...publishedFilter});
     }
     return res.send(albums);
   } catch (e) {
     return next(e)
   }
 })
+
 
 albumRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
