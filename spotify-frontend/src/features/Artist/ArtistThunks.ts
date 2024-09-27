@@ -48,3 +48,59 @@ export const createArtist = createAsyncThunk<void, mutationArtist, {
   }
 });
 
+export const patchArtist = createAsyncThunk<void, string, { rejectValue: string, state: RootState }>(
+  'artist/patch',
+  async (artistId, {rejectWithValue, getState, dispatch}) => {
+    try {
+      const token = getState().users.user?.token;
+      if (!token) {
+        console.error('No user token found');
+        return;
+      }
+      await axiosApi.patch(
+        `/artists/${artistId}/togglePublished`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch(fetchArtist())
+    } catch (e) {
+      if (isAxiosError(e) && e.response && e.response.status === 400) {
+        return rejectWithValue(e.response.data);
+      }
+      throw e;
+    }
+  }
+);
+
+
+export const deleteArtist = createAsyncThunk<void, string, {
+  rejectValue: GlobalError, state: RootState
+}>('artist/delete', async (artistId, {rejectWithValue, getState,dispatch}) => {
+  try {
+    const token = getState().users.user?.token;
+    if (!token) {
+      console.error('No user token found');
+    }
+    await axiosApi.delete(`/artists/${artistId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    dispatch(fetchArtist())
+  } catch (e) {
+    if (isAxiosError(e) && e.response && e.response.status === 400) {
+      return rejectWithValue(e.response.data);
+    }
+    throw e;
+  }
+});
+
+
+
+
+
+

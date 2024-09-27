@@ -40,18 +40,19 @@ artistRouter.post('/', auth, imagesUpload.single('image'), async (req: express.R
   }
 })
 
-artistRouter.patch('/:id/TogglePublished', auth, permit('admin'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
+artistRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req: RequestWithUser, res: Response, next: NextFunction) => {
   try {
     const artist = await Artist.findById(req.params.id);
     if (!artist) {
       return res.status(404).send({error: 'artist not found'});
     }
+    await Artist.updateOne(
+      { _id: req.params.id },
+      { $set: { isPublished: !artist.isPublished } }
+    );
 
-    artist.isPublished = !artist.isPublished;
-
-    await artist.save();
-
-    return res.send(artist)
+    const updatedArtist = await Artist.findById(req.params.id);
+    return res.send(updatedArtist);
   } catch (e) {
     next(e)
   }

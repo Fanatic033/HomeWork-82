@@ -1,6 +1,6 @@
-import {ArtistI} from "../../types.ts";
-import {createSlice} from "@reduxjs/toolkit";
-import {createArtist, fetchArtist} from './ArtistThunks.ts';
+import {ArtistI} from '../../types.ts';
+import {createSlice} from '@reduxjs/toolkit';
+import {createArtist, deleteArtist, fetchArtist} from './ArtistThunks.ts';
 
 export interface ArtistState {
     artists: ArtistI[];
@@ -40,6 +40,10 @@ const artistSlice = createSlice({
         .addCase(createArtist.rejected,(state) => {
           state.isCreating = false
         })
+        builder
+          .addCase(deleteArtist.fulfilled,(state,{meta}) => {
+            state.artists = state.artists.filter(artist => artist._id !== meta.arg);
+          });
     },
     selectors: {
         selectArtist: (state) => state.artists,

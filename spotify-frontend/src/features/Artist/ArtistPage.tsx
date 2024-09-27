@@ -48,7 +48,7 @@ const ArtistPage = () => {
           )}
         </div>
       ) : (
-        <div style={{display: 'flex'}}>
+        <div style={{display: 'flex',flexWrap:'wrap'}}>
           {artist.map((artist) => (
             <ArtistCard
               key={artist._id}

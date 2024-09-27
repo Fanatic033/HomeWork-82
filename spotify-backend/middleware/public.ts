@@ -20,7 +20,6 @@ export const publicGet = async (req: RequestUser, res: Response, next: NextFunct
       const user = await User.findOne({ token });
       if (user) {
         req.user = user;
-        console.log(user)
       }
     }
   }
