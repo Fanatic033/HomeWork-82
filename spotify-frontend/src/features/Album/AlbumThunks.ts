@@ -52,3 +52,53 @@ export const createAlbum = createAsyncThunk<void, mutationAlbum, {
     throw e
   }
 });
+
+export const patchAlbum = createAsyncThunk<void, string, { rejectValue: string, state: RootState }>(
+  'artist/patch',
+  async (albumId, {rejectWithValue, getState,}) => {
+    try {
+      const token = getState().users.user?.token;
+      if (!token) {
+        console.error('No user token found');
+        return;
+      }
+      await axiosApi.patch(
+        `/albums/${albumId}/togglePublished`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (e) {
+      if (isAxiosError(e) && e.response && e.response.status === 400) {
+        return rejectWithValue(e.response.data);
+      }
+      throw e;
+    }
+  }
+);
+
+
+export const deleteAlbum = createAsyncThunk<void, string, {
+  rejectValue: GlobalError, state: RootState
+}>('artist/delete', async (albumId, {rejectWithValue, getState,}) => {
+  try {
+    const token = getState().users.user?.token;
+    if (!token) {
+      console.error('No user token found');
+    }
+    await axiosApi.delete(`/albums/${albumId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+  } catch (e) {
+    if (isAxiosError(e) && e.response && e.response.status === 400) {
+      return rejectWithValue(e.response.data);
+    }
+    throw e;
+  }
+});

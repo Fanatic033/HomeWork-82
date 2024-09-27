@@ -19,13 +19,13 @@ const ArtistCard: React.FC<Props> = ({title, image, id, isPublished}) => {
   const user = useAppSelector(selectUser);
   const cardImage = image ? `${API_URL}/${image}` : imageNotFound;
 
-  const handleDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleDelete =  (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     event.preventDefault();
     dispatch(deleteArtist(id));
   };
 
-  const handlePublish = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handlePublish = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     event.preventDefault();
     dispatch(patchArtist(id))
