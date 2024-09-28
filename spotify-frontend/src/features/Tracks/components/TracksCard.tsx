@@ -1,10 +1,11 @@
 import {Button, Card, CardContent, Typography} from '@mui/material';
-import {FC} from 'react';
+import {FC, useCallback,memo} from 'react';
 import {TrackI} from '../../../types.ts';
 import {useAppDispatch, useAppSelector} from '../../../app/hooks.ts';
 import {selectUser} from '../../User/UserSlice.ts';
 import PlayCircleOutlineOutlinedIcon from '@mui/icons-material/PlayCircleOutlineOutlined';
 import {addTrackToHistory} from '../../TrackHistory/TrackHistoryThunks.ts';
+import {deleteTrack, fetchTracks, patchTrack} from '../TracksThunks.ts';
 
 interface Props {
   track: TrackI;
@@ -14,11 +15,22 @@ const TrackCard: FC<Props> = ({track}) => {
   const dispatch = useAppDispatch()
   const user = useAppSelector(selectUser)
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (user) {
       dispatch(addTrackToHistory({track: track._id}));
     }
-  };
+  }, [user, track._id, dispatch]);
+
+  const handleDelete = useCallback(async () => {
+    await dispatch(deleteTrack(track._id));
+    await dispatch(fetchTracks(track.album._id));
+  }, [dispatch, track._id, track.album._id]);
+
+  const handlePatch = useCallback(async () => {
+    await dispatch(patchTrack(track._id));
+    await dispatch(fetchTracks(track.album._id));
+  }, [dispatch, track._id, track.album._id]);
+
   return (
     <Card
       sx={{
@@ -86,9 +98,29 @@ const TrackCard: FC<Props> = ({track}) => {
         ) : (
           <p style={{display: 'none'}}></p>
         )}
+        {user?.role === 'admin' && (
+          <>
+            {track.isPublished ? (
+              <Button
+                variant="outlined"
+                sx={{color: 'red', borderColor: 'red', marginTop: 'auto'}}
+                onClick={handleDelete}
+              >Удалить
+              </Button>
+            ) : (
+              <Button
+                variant="outlined"
+                sx={{color: 'green', borderColor: 'green', marginTop: 'auto',}}
+                onClick={handlePatch}
+              >
+                Опубликовать
+              </Button>
+            )}
+          </>
+        )}
       </CardContent>
     </Card>
   );
 };
 
-export default TrackCard;
+export default memo(TrackCard);

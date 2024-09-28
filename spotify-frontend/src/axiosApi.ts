@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { API_URL } from './constants';
-import { Store } from '@reduxjs/toolkit';
+import {API_URL} from './constants';
+import {Store} from '@reduxjs/toolkit';
 import {RootState} from './app/store.ts';
 
 const axiosApi = axios.create({
@@ -10,7 +10,7 @@ const axiosApi = axios.create({
 export const addInterceptors = (store: Store<RootState>) => {
   axiosApi.interceptors.request.use((request) => {
     const token = store.getState().users.user?.token;
-    if (!token) {
+    if (token) {
       request.headers.set('Authorization', `Bearer ${token}`);
     }
 

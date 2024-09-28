@@ -7,19 +7,15 @@ import {isAxiosError} from 'axios';
 
 export const fetchArtist = createAsyncThunk<ArtistI[], void, { state: RootState }>(
   'artist/fetchAll',
-  async (_, {getState}) => {
-    const token = getState().users.user?.token;
-    const config = token
-      ? {headers: {Authorization: `Bearer ${token}`}}
-      : {};
-    const {data: artists} = await axiosApi.get<ArtistI[]>('/artists', config);
+  async (_,) => {
+    const {data: artists} = await axiosApi.get<ArtistI[]>('/artists',);
     return artists;
   }
 );
 
 export const createArtist = createAsyncThunk<void, mutationArtist, {
   rejectValue: GlobalError, state: RootState
-}>('album/create', async (artistMutation, {rejectWithValue, getState}) => {
+}>('album/create', async (artistMutation, {rejectWithValue,}) => {
   try {
     const formData = new FormData();
 
@@ -30,16 +26,7 @@ export const createArtist = createAsyncThunk<void, mutationArtist, {
         formData.append(key, value);
       }
     });
-
-    const token = getState().users.user?.token;
-    if (!token) {
-      console.error('No user token found');
-    }
-    await axiosApi.post('/artists', formData, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    await axiosApi.post('/artists', formData,);
   } catch (e) {
     if (isAxiosError(e) && e.response && e.response.status === 400) {
       return rejectWithValue(e.response.data)
@@ -50,22 +37,11 @@ export const createArtist = createAsyncThunk<void, mutationArtist, {
 
 export const patchArtist = createAsyncThunk<void, string, { rejectValue: string, state: RootState }>(
   'artist/patch',
-  async (artistId, {rejectWithValue, getState, dispatch}) => {
+  async (artistId, {rejectWithValue, dispatch}) => {
     try {
-      const token = getState().users.user?.token;
-      if (!token) {
-        console.error('No user token found');
-        return;
-      }
       await axiosApi.patch(
         `/artists/${artistId}/togglePublished`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+        {},);
       dispatch(fetchArtist())
     } catch (e) {
       if (isAxiosError(e) && e.response && e.response.status === 400) {
@@ -79,17 +55,9 @@ export const patchArtist = createAsyncThunk<void, string, { rejectValue: string,
 
 export const deleteArtist = createAsyncThunk<void, string, {
   rejectValue: GlobalError, state: RootState
-}>('artist/delete', async (artistId, {rejectWithValue, getState,dispatch}) => {
+}>('artist/delete', async (artistId, {rejectWithValue, dispatch}) => {
   try {
-    const token = getState().users.user?.token;
-    if (!token) {
-      console.error('No user token found');
-    }
-    await axiosApi.delete(`/artists/${artistId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    await axiosApi.delete(`/artists/${artistId}`);
     dispatch(fetchArtist())
   } catch (e) {
     if (isAxiosError(e) && e.response && e.response.status === 400) {

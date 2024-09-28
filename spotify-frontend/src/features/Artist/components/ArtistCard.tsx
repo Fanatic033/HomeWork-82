@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../../app/hooks.ts';
 import {selectUser} from '../../User/UserSlice.ts';
 import {deleteArtist, patchArtist} from '../ArtistThunks.ts';
+import {useCallback, memo} from 'react';
 
 interface Props {
   title: string;
@@ -19,17 +20,17 @@ const ArtistCard: React.FC<Props> = ({title, image, id, isPublished}) => {
   const user = useAppSelector(selectUser);
   const cardImage = image ? `${API_URL}/${image}` : imageNotFound;
 
-  const handleDelete =  (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleDelete = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     event.preventDefault();
     dispatch(deleteArtist(id));
-  };
+  }, [dispatch, id]);
 
-  const handlePublish = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handlePublish = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     event.preventDefault();
     dispatch(patchArtist(id))
-  };
+  }, [dispatch, id]);
 
   return (
     <Card
@@ -45,7 +46,7 @@ const ArtistCard: React.FC<Props> = ({title, image, id, isPublished}) => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        textDecoration:'none'
+        textDecoration: 'none'
       }}
       component={Link}
       to={`albums/${id}`}
@@ -111,4 +112,4 @@ const ArtistCard: React.FC<Props> = ({title, image, id, isPublished}) => {
   );
 };
 
-export default ArtistCard;
+export default memo(ArtistCard);

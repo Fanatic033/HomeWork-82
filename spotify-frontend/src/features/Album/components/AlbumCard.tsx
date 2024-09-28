@@ -2,7 +2,7 @@ import {Button, Card, CardContent, CardMedia, Typography} from '@mui/material';
 import {Link} from 'react-router-dom';
 import Image from '@/assets/image-not-found.png'
 import {AlbumI} from '../../../types.ts';
-import React, {FC} from 'react';
+import React, {FC, useCallback,memo} from 'react';
 import {API_URL} from '../../../constants.ts';
 import dayjs from 'dayjs';
 import {useAppDispatch, useAppSelector} from '../../../app/hooks.ts';
@@ -24,20 +24,20 @@ const AlbumCard: FC<AlbumCardProps> = ({album}) => {
   const year = album.created_at;
   const formattedDate = dayjs(`${year}-01-01`).format('YYYY');
 
-  const deleteOneAlbum = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const deleteOneAlbum = useCallback(async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     event.preventDefault();
     await dispatch(deleteAlbum(album._id)).unwrap()
     dispatch(fetchAlbums(album.artist._id))
-  }
+  }, [dispatch, album._id, album.artist._id])
 
 
-  const patchOneAlbum = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const patchOneAlbum = useCallback( async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     event.preventDefault();
     await dispatch(patchAlbum(album._id))
     await dispatch(fetchAlbums(album.artist._id))
-  }
+  },[dispatch, album._id, album.artist._id])
 
   return (
     <Card
@@ -127,4 +127,4 @@ const AlbumCard: FC<AlbumCardProps> = ({album}) => {
   );
 };
 
-export default AlbumCard;
+export default memo(AlbumCard);
