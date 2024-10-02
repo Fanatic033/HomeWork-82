@@ -6,6 +6,7 @@ import {useAppDispatch, useAppSelector} from '../../app/hooks.ts';
 import {selectLoginError, selectLoginLoading} from './UserSlice.ts';
 import {login} from './UserThunks.ts';
 import {LoadingButton} from '@mui/lab';
+import {GoogleLogin} from '@react-oauth/google';
 
 
 const Login = () => {
@@ -64,7 +65,15 @@ const Login = () => {
           {error.error}
         </Alert>
       )}
-      <Box component="form" onSubmit={submitFormHandler} sx={{mt: 3}}>
+      <Box component="form" onSubmit={submitFormHandler} sx={{mt: 3,display:'flex',flexDirection:'column',justifyContent: 'center' }}>
+        <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            console.log(credentialResponse);
+          }}
+          onError={() => {
+            console.log('Login Failed')
+          }}
+        />
         <Box sx={{width: '100%', maxWidth: 400, mt: 2}}>
           <TextField
             required
