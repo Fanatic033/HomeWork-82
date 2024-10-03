@@ -4,7 +4,7 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../app/hooks.ts';
 import {selectLoginError, selectLoginLoading} from './UserSlice.ts';
-import {login} from './UserThunks.ts';
+import {googleLogin, login} from './UserThunks.ts';
 import {LoadingButton} from '@mui/lab';
 import {GoogleLogin} from '@react-oauth/google';
 
@@ -39,6 +39,11 @@ const Login = () => {
     }
   }
 
+  const googleLoginHandler = async (credential: string) => {
+    await dispatch(googleLogin(credential)).unwrap();
+    navigate('/');
+  }
+
 
   return (
     <Box
@@ -65,15 +70,20 @@ const Login = () => {
           {error.error}
         </Alert>
       )}
-      <Box component="form" onSubmit={submitFormHandler} sx={{mt: 3,display:'flex',flexDirection:'column',justifyContent: 'center' }}>
+      <Box sx={{ pt: 2 }}>
         <GoogleLogin
           onSuccess={(credentialResponse) => {
-            console.log(credentialResponse);
+            if (credentialResponse.credential) {
+              void googleLoginHandler(credentialResponse.credential);
+            }
           }}
           onError={() => {
-            console.log('Login Failed')
+            console.log('Login Failed');
           }}
         />
+      </Box>
+      <Box component="form" onSubmit={submitFormHandler}
+           sx={{mt: 3, display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
         <Box sx={{width: '100%', maxWidth: 400, mt: 2}}>
           <TextField
             required
@@ -97,7 +107,7 @@ const Login = () => {
             margin="normal"
           />
         </Box>
-        <LoadingButton type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}} loading={btnLoading}>
+        <LoadingButton type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}} loading={btnLoading ? true : undefined}>
           Войти
         </LoadingButton>
         <Link component={RouterLink} to={'/register'} variant="body2" sx={{textDecoration: 'none'}}>

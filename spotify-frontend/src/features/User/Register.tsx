@@ -7,6 +7,7 @@ import {RegisterMutation} from '../../types.ts';
 import {selectRegisterError, selectRegisterLoading} from './UserSlice.ts';
 import {register} from './UserThunks.ts';
 import {LoadingButton} from '@mui/lab';
+import FileInput from '../../UI/FileInput/FileInput.tsx';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -40,6 +41,16 @@ const Register = () => {
     } catch (e) {
       console.error(e)
     }
+  };
+
+  const fileInputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {name, files} = event.target;
+    const value = files && files[0] ? files[0] : null;
+
+    setState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   return (
@@ -78,19 +89,30 @@ const Register = () => {
           />
           <TextField
             required
-            type="password"
-            label="Password"
-            name="password"
-            autoComplete="new-password"
+            type="text"
+            label="DisplayName"
+            name="displayName"
             value={state.password}
             onChange={inputChangeHandler}
             fullWidth
             margin="normal"
-            error={Boolean(getFieldError('password'))}
-            helperText={getFieldError('password')}
           />
+          <FileInput label={'Image'} name={'image'} onChange={fileInputChangeHandler}/>
+          <TextField
+          required
+          type="password"
+          label="Password"
+          name="password"
+          autoComplete="new-password"
+          value={state.password}
+          onChange={inputChangeHandler}
+          fullWidth
+          margin="normal"
+          error={Boolean(getFieldError('password'))}
+          helperText={getFieldError('password')}
+        />
         </Box>
-        <LoadingButton type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}} loading={btnLoading} >
+        <LoadingButton type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}} loading={btnLoading}>
           Регистрация
         </LoadingButton>
         <Link component={NavLink} to={'/login'} variant="body2" sx={{textDecoration: 'none'}}>
