@@ -38,6 +38,7 @@ const UserSchema = new Schema<UserFields, UserModel, UserMethods>({
   },
   displayName: {
     type: String,
+    required: true,
   },
   googleID: String,
   avatar: String,

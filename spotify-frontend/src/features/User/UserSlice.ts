@@ -50,9 +50,9 @@ export const usersSlice = createSlice({
             state.loginLoading = true;
             state.loginError = null;
           })
-          .addCase(googleLogin.fulfilled, (state, {payload: user}) => {
+          .addCase(googleLogin.fulfilled, (state, payload) => {
             state.loginLoading = false;
-            state.user = user;
+            state.user = payload.payload;
           })
           .addCase(googleLogin.rejected, (state, {payload: error}) => {
             state.loginLoading = false;

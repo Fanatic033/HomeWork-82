@@ -5,14 +5,15 @@ import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../app/hooks.ts';
 import {selectLoginError, selectLoginLoading} from './UserSlice.ts';
 import {googleLogin, login} from './UserThunks.ts';
-import {LoadingButton} from '@mui/lab';
 import {GoogleLogin} from '@react-oauth/google';
+import {LoadingButton} from '@mui/lab';
 
 
 const Login = () => {
   const dispatch = useAppDispatch()
   const error = useAppSelector(selectLoginError)
   const btnLoading = useAppSelector(selectLoginLoading);
+
   const navigate = useNavigate()
 
   const [state, setState] = useState({
@@ -41,7 +42,6 @@ const Login = () => {
 
   const googleLoginHandler = async (credential: string) => {
     await dispatch(googleLogin(credential)).unwrap();
-    navigate('/');
   }
 
 
@@ -70,12 +70,13 @@ const Login = () => {
           {error.error}
         </Alert>
       )}
-      <Box sx={{ pt: 2 }}>
+      <Box sx={{pt: 2}}>
         <GoogleLogin
           onSuccess={(credentialResponse) => {
             if (credentialResponse.credential) {
               void googleLoginHandler(credentialResponse.credential);
             }
+            console.log(credentialResponse)
           }}
           onError={() => {
             console.log('Login Failed');
@@ -107,7 +108,8 @@ const Login = () => {
             margin="normal"
           />
         </Box>
-        <LoadingButton type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}} loading={btnLoading ? true : undefined}>
+        <LoadingButton type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}}
+                       loading={btnLoading ? false : undefined}>
           Войти
         </LoadingButton>
         <Link component={RouterLink} to={'/register'} variant="body2" sx={{textDecoration: 'none'}}>

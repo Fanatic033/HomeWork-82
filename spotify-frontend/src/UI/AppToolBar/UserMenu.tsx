@@ -3,16 +3,25 @@ import {Avatar, Menu, MenuItem} from '@mui/material';
 import {User} from '../../types.ts';
 import Box from '@mui/material/Box';
 import {green} from '@mui/material/colors';
-import PersonIcon from '@mui/icons-material/Person';
 import {NavLink} from 'react-router-dom';
 import {useAppDispatch} from '../../app/hooks.ts';
 import {logout} from '../../features/User/UserThunks.ts';
+import {API_URL} from '../../constants.ts';
+import Image from '@/assets/image-not-found.png';
+import Typography from '@mui/material/Typography';
 
 interface Props {
   user: User;
 }
 
 const UserMenu: React.FC<Props> = ({user}) => {
+
+  let cardImage = Image;
+
+  if (cardImage) {
+    cardImage = `${API_URL}/${user.avatar}`;
+  }
+
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const isOpen = Boolean(anchorEl);
@@ -31,15 +40,22 @@ const UserMenu: React.FC<Props> = ({user}) => {
 
   return (
     <>
-    <Box>
-      <Avatar onClick={handleClick} sx={{bgcolor: green[500]}}><PersonIcon/></Avatar>
-      <Menu open={isOpen} anchorEl={anchorEl} keepMounted={true} onClose={handleClose}>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>My Account {user.username}</MenuItem>
-        <MenuItem component={NavLink} to={'/track-history'}>Track History</MenuItem>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
-      </Menu>
-    </Box>
+      <Box>
+        <Box sx={{display: 'flex', gap: 2, alignItems: 'center'}}>
+          <Avatar
+            onClick={handleClick}
+            sx={{bgcolor: green[500], width: 56, height: 56}}
+            src={cardImage}
+            alt={user.displayName}/>
+          <Typography>{user.displayName.toUpperCase()}</Typography>
+        </Box>
+        <Menu open={isOpen} anchorEl={anchorEl} keepMounted={true} onClose={handleClose}>
+          <MenuItem>Profile</MenuItem>
+          <MenuItem>My Account {user.username}</MenuItem>
+          <MenuItem component={NavLink} to={'/track-history'}>Track History</MenuItem>
+          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        </Menu>
+      </Box>
     </>
   );
 };

@@ -18,6 +18,8 @@ const Register = () => {
   const [state, setState] = useState<RegisterMutation>({
     username: '',
     password: '',
+    displayName: '',
+    avatar: '',
   });
 
   const getFieldError = (fieldName: string) => {
@@ -46,7 +48,6 @@ const Register = () => {
   const fileInputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, files} = event.target;
     const value = files && files[0] ? files[0] : null;
-
     setState((prevState) => ({
       ...prevState,
       [name]: value,
@@ -92,25 +93,25 @@ const Register = () => {
             type="text"
             label="DisplayName"
             name="displayName"
-            value={state.password}
+            value={state.displayName}
             onChange={inputChangeHandler}
             fullWidth
             margin="normal"
           />
-          <FileInput label={'Image'} name={'image'} onChange={fileInputChangeHandler}/>
+          <FileInput label={'Avatar'} name={'avatar'} onChange={fileInputChangeHandler}/>
           <TextField
-          required
-          type="password"
-          label="Password"
-          name="password"
-          autoComplete="new-password"
-          value={state.password}
-          onChange={inputChangeHandler}
-          fullWidth
-          margin="normal"
-          error={Boolean(getFieldError('password'))}
-          helperText={getFieldError('password')}
-        />
+            required
+            type="password"
+            label="Password"
+            name="password"
+            autoComplete="new-password"
+            value={state.password}
+            onChange={inputChangeHandler}
+            fullWidth
+            margin="normal"
+            error={Boolean(getFieldError('password'))}
+            helperText={getFieldError('password')}
+          />
         </Box>
         <LoadingButton type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}} loading={btnLoading}>
           Регистрация

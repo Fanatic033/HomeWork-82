@@ -7,9 +7,18 @@ import {unsetUser} from './UserSlice.ts';
 
 export const register = createAsyncThunk<User, RegisterMutation, { rejectValue: ValidationError }>(
   'users/register',
-  async (registerMutation, {rejectWithValue}) => {
+  async (MutationRegister, {rejectWithValue}) => {
     try {
-      const {data: user} = await axiosApi.post<User>('/users', registerMutation);
+      const formData = new FormData();
+
+      const keys = Object.keys(MutationRegister) as (keyof  RegisterMutation)[];
+      keys.forEach((key) => {
+        const value = MutationRegister[key];
+        if (value !== null) {
+          formData.append(key, value);
+        }
+      });
+      const {data: user} = await axiosApi.post<User>('/users', formData);
       return user;
     } catch (e) {
       if (isAxiosError(e) && e.response && e.response.status === 400) {

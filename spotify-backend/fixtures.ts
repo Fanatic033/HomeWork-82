@@ -18,7 +18,7 @@ const run = async () => {
     console.log('Skipping drop...');
   }
 
-  const [weekendArtist, vsxPrinceArtist,imagineDragons] = await Artist.create({
+  const [weekendArtist, vsxPrinceArtist, imagineDragons] = await Artist.create({
     title: 'The Weeknd',
     image: 'fixtures/TheWEEKND.jpg',
     description: 'Canadian singer, songwriter, and record producer.',
@@ -28,7 +28,7 @@ const run = async () => {
     image: 'fixtures/prince.jpg',
     description: 'Unique artist from KZ.',
     isPublished: true,
-  },{
+  }, {
     title: 'Imagine Dragons',
     image: 'fixtures/imagine.webp',
     description: 'ROCK Group',
@@ -63,7 +63,7 @@ const run = async () => {
     isPublished: true,
   });
 
-  const  imagineAlbum = await Album.create({
+  const imagineAlbum = await Album.create({
     artist: imagineDragons._id,
     title: 'Evolve',
     created_at: 2017,
@@ -201,18 +201,18 @@ const run = async () => {
   });
 
   await Track.create({
-    album:  imagineAlbum,
+    album: imagineAlbum,
     title: 'Believer',
     duration: '3:40',
     track_number: 1,
     isPublished: false,
-  },{
+  }, {
     album: imagineAlbum._id,
     title: 'I dont Know Why',
     duration: '3:50',
     track_number: 2,
     isPublished: false,
-  },{
+  }, {
     album: imagineAlbum,
     title: 'Rise up',
     duration: '3:10',
@@ -221,16 +221,17 @@ const run = async () => {
   })
 
 
-
   await User.create({
       username: 'user1',
       password: 'user1',
+      displayName: 'user1',
       token: crypto.randomUUID(),
       role: 'user',
     },
     {
       username: 'admin1',
       password: 'admin1',
+      displayName: 'admin1',
       token: crypto.randomUUID(),
       role: 'admin',
     }

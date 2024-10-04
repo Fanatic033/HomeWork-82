@@ -1,10 +1,11 @@
 export interface ArtistI {
-    _id: string;
-    title: string;
-    image: string;
-    description: string;
-    isPublished: boolean;
+  _id: string;
+  title: string;
+  image: string;
+  description: string;
+  isPublished: boolean;
 }
+
 export interface mutationArtist {
   title: string;
   image: string;
@@ -33,25 +34,25 @@ export interface mutationAlbum {
 }
 
 export interface TrackI {
-_id: string;
-album: {
   _id: string;
-  title: string;
-  created_at: number;
-  image: string | null;
-  artist: {
+  album: {
     _id: string;
     title: string;
+    created_at: number;
+    image: string | null;
+    artist: {
+      _id: string;
+      title: string;
+    }
   }
-}
-title: string;
-duration: string;
-track_number: number;
-isPublished: boolean;
+  title: string;
+  duration: string;
+  track_number: number;
+  isPublished: boolean;
 }
 
 export interface mutationTrack {
-  album:string;
+  album: string;
   title: string;
   duration: string;
   track_number: string,
@@ -61,6 +62,8 @@ export interface mutationTrack {
 export interface RegisterMutation {
   username: string;
   password: string;
+  displayName: string;
+  avatar: string | null;
 }
 
 export interface LoginMutation {
@@ -71,6 +74,8 @@ export interface LoginMutation {
 export interface User {
   _id: string;
   username: string;
+  displayName: string;
+  avatar: string | null;
   token: string;
   role: string;
 }
@@ -97,6 +102,6 @@ export interface ValidationError {
 }
 
 
-export interface GlobalError  {
+export interface GlobalError {
   error: string;
 }
