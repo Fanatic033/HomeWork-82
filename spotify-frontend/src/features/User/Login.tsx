@@ -52,7 +52,7 @@ const Login = () => {
         alignItems: 'center',
         background: 'white',
         width: '600px',
-        height: '600px',
+        height: '700px',
         borderRadius: '3%',
         margin: '50px auto',
       }}

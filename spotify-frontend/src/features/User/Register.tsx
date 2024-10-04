@@ -5,9 +5,10 @@ import { Link as NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks.ts";
 import { RegisterMutation } from "../../types.ts";
 import { selectRegisterError, selectRegisterLoading } from "./UserSlice.ts";
-import { register } from "./UserThunks.ts";
+import {googleLogin, register} from './UserThunks.ts';
 import { LoadingButton } from "@mui/lab";
 import FileInput from "../../UI/FileInput/FileInput.tsx";
+import {GoogleLogin} from '@react-oauth/google';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -55,6 +56,11 @@ const Register = () => {
     }));
   };
 
+  const googleLoginHandler = async (credential: string) => {
+    await dispatch(googleLogin(credential)).unwrap();
+    navigate('/')
+  };
+
   return (
     <Box
       sx={{
@@ -64,7 +70,7 @@ const Register = () => {
         alignItems: "center",
         background: "white",
         width: "600px",
-        height: "600px",
+        height: "700px",
         borderRadius: "3%",
         margin: "50px auto",
       }}
@@ -75,6 +81,19 @@ const Register = () => {
       <Typography component="h1" variant="h5">
         Зарегестрироваться
       </Typography>
+      <Box sx={{pt: 2}}>
+        <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            if (credentialResponse.credential) {
+              void googleLoginHandler(credentialResponse.credential);
+            }
+            console.log(credentialResponse);
+          }}
+          onError={() => {
+            console.log('Login Failed');
+          }}
+        />
+      </Box>
       <Box
         component="form"
         noValidate
