@@ -1,48 +1,51 @@
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import GraphicEqIcon from '@mui/icons-material/GraphicEq';
-import {Link} from 'react-router-dom';
-import DefaultMenu from './DefaultMenu.tsx';
-import {useAppSelector} from '../../app/hooks.ts';
-import {selectUser} from '../../features/User/UserSlice.ts';
-import UserMenu from './UserMenu.tsx';
-
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import GraphicEqIcon from "@mui/icons-material/GraphicEq";
+import { Link } from "react-router-dom";
+import DefaultMenu from "./DefaultMenu.tsx";
+import { useAppSelector } from "../../app/hooks.ts";
+import { selectUser } from "../../features/User/UserSlice.ts";
+import UserMenu from "./UserMenu.tsx";
 
 const ResponsiveAppBar = () => {
   const user = useAppSelector(selectUser);
 
   return (
-    <AppBar position="static" sx={{bgcolor: 'black'}}>
+    <AppBar position="static" sx={{ bgcolor: "black" }}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{display: 'flex', justifyContent: 'space-between',}}>
-          <div style={{display: 'flex', alignItems: 'center'}}>
-            <GraphicEqIcon sx={{display: {xs: 'none', md: 'flex'}, mr: 1,}}/>
+        <Toolbar
+          disableGutters
+          sx={{ display: "flex", justifyContent: "space-between" }}
+        >
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <GraphicEqIcon
+              sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+            />
             <Typography
               variant="h6"
               noWrap
               component={Link}
-              to={'/'}
+              to={"/"}
               sx={{
                 mr: 2,
-                display: {xs: 'none', md: 'flex'},
-                fontFamily: 'monospace',
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
                 fontWeight: 700,
-                letterSpacing: '.2rem',
-                color: 'inherit',
-                textDecoration: 'none',
+                letterSpacing: ".2rem",
+                color: "inherit",
+                textDecoration: "none",
               }}
             >
               spotify
             </Typography>
-
           </div>
 
-          <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -50,11 +53,10 @@ const ResponsiveAppBar = () => {
               aria-haspopup="true"
               color="inherit"
             >
-              <MenuIcon/>
+              <MenuIcon />
             </IconButton>
-
           </Box>
-          <GraphicEqIcon sx={{display: {xs: 'flex', md: 'none'}, mr: 1}}/>
+          <GraphicEqIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -62,23 +64,21 @@ const ResponsiveAppBar = () => {
             href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
-              display: {xs: 'flex', md: 'none'},
+              display: { xs: "flex", md: "none" },
               flexGrow: 1,
-              fontFamily: 'monospace',
+              fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
             LOGO
           </Typography>
-          {user ? (
-            <UserMenu user={user} />
-          ) : <DefaultMenu/>}
+          {user ? <UserMenu user={user} /> : <DefaultMenu />}
         </Toolbar>
       </Container>
     </AppBar>
-  )
+  );
 };
 export default ResponsiveAppBar;

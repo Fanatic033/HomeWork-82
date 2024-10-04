@@ -1,6 +1,6 @@
-import {TrackI} from '../../types.ts';
-import {createSlice} from '@reduxjs/toolkit';
-import {createTrack, fetchTracks} from './TracksThunks.ts';
+import { TrackI } from "../../types.ts";
+import { createSlice } from "@reduxjs/toolkit";
+import { createTrack, fetchTracks } from "./TracksThunks.ts";
 
 interface TracksState {
   tracks: TrackI[];
@@ -12,10 +12,10 @@ const initialState: TracksState = {
   tracks: [],
   trackFetching: false,
   createFetching: false,
-}
+};
 
 const tracksSlice = createSlice({
-  name: 'track',
+  name: "track",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -23,13 +23,13 @@ const tracksSlice = createSlice({
       .addCase(fetchTracks.pending, (state) => {
         state.trackFetching = true;
       })
-      .addCase(fetchTracks.fulfilled, (state, {payload: tracks}) => {
+      .addCase(fetchTracks.fulfilled, (state, { payload: tracks }) => {
         state.trackFetching = false;
-        state.tracks = tracks
+        state.tracks = tracks;
       })
       .addCase(fetchTracks.rejected, (state) => {
         state.trackFetching = false;
-      })
+      });
     builder
       .addCase(createTrack.pending, (state) => {
         state.createFetching = true;
@@ -39,16 +39,16 @@ const tracksSlice = createSlice({
       })
       .addCase(createTrack.rejected, (state) => {
         state.createFetching = false;
-      })
+      });
   },
   selectors: {
     selectTracks: (state) => state.tracks,
     selectTrackFetching: (state) => state.trackFetching,
-    selectCreateFetching: (state) => state.createFetching
-  }
-})
-
+    selectCreateFetching: (state) => state.createFetching,
+  },
+});
 
 export const tracksReducer = tracksSlice.reducer;
 
-export const {selectTracks, selectTrackFetching, selectCreateFetching} = tracksSlice.selectors;
+export const { selectTracks, selectTrackFetching, selectCreateFetching } =
+  tracksSlice.selectors;

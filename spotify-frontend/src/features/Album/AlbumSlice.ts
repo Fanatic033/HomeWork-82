@@ -12,23 +12,24 @@ const initialState: AlbumState = {
   albums: [],
   isFetching: false,
   isCreatingAlbum: false,
-}
+};
 
 const albumSlice = createSlice({
   name: 'album',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchAlbums.pending, (state) => {
-      state.isFetching = true
-    })
+    builder
+      .addCase(fetchAlbums.pending, (state) => {
+        state.isFetching = true;
+      })
       .addCase(fetchAlbums.fulfilled, (state, {payload: albums}) => {
         state.isFetching = false;
-        state.albums = albums
+        state.albums = albums;
       })
       .addCase(fetchAlbums.rejected, (state) => {
-        state.isFetching = false
-      })
+        state.isFetching = false;
+      });
     builder
       .addCase(createAlbum.pending, (state) => {
         state.isCreatingAlbum = true;
@@ -37,15 +38,16 @@ const albumSlice = createSlice({
         state.isCreatingAlbum = false;
       })
       .addCase(createAlbum.rejected, (state) => {
-        state.isCreatingAlbum = false
-      })
+        state.isCreatingAlbum = false;
+      });
   },
   selectors: {
     selectAlbum: (state) => state.albums,
     selectFetching: (state) => state.isFetching,
     selectIsCreatingAlbum: (state) => state.isCreatingAlbum,
-  }
-})
+  },
+});
 
 export const albumReducer = albumSlice.reducer;
-export const {selectAlbum, selectFetching,selectIsCreatingAlbum} = albumSlice.selectors
+export const {selectAlbum, selectFetching, selectIsCreatingAlbum} =
+  albumSlice.selectors;

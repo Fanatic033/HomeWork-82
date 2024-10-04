@@ -1,6 +1,6 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {addTrackToHistory, fetchHistoryTracks} from './TrackHistoryThunks';
-import {GlobalError, TrackHistory} from '../../types';
+import { createSlice } from "@reduxjs/toolkit";
+import { addTrackToHistory, fetchHistoryTracks } from "./TrackHistoryThunks";
+import { GlobalError, TrackHistory } from "../../types";
 
 interface TrackHistoryState {
   trackHistory: TrackHistory[];
@@ -17,7 +17,7 @@ const initialState: TrackHistoryState = {
 };
 
 const trackHistorySlice = createSlice({
-  name: 'trackHistory',
+  name: "trackHistory",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -29,28 +29,29 @@ const trackHistorySlice = createSlice({
       .addCase(addTrackToHistory.fulfilled, (state) => {
         state.trackFetching = false;
       })
-      .addCase(addTrackToHistory.rejected, (state, {payload: track}) => {
+      .addCase(addTrackToHistory.rejected, (state, { payload: track }) => {
         state.trackFetching = false;
         state.addTrackError = track || null;
       });
     builder
       .addCase(fetchHistoryTracks.pending, (state) => {
-        state.HistoryFetching = true
+        state.HistoryFetching = true;
       })
-      .addCase(fetchHistoryTracks.fulfilled, (state, {payload: track}) => {
+      .addCase(fetchHistoryTracks.fulfilled, (state, { payload: track }) => {
         state.HistoryFetching = false;
-        state.trackHistory = track
+        state.trackHistory = track;
       })
       .addCase(fetchHistoryTracks.rejected, (state) => {
         state.HistoryFetching = false;
-      })
+      });
   },
   selectors: {
     selectHistory: (state) => state.trackHistory,
     selectFetchingHistory: (state) => state.HistoryFetching,
-  }
+  },
 });
 
 export const trackHistoryReducer = trackHistorySlice.reducer;
 
-export const {selectHistory,selectFetchingHistory} = trackHistorySlice.selectors
+export const { selectHistory, selectFetchingHistory } =
+  trackHistorySlice.selectors;

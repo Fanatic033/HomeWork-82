@@ -1,17 +1,27 @@
-import Box from '@mui/material/Box';
-import {Button} from '@mui/material';
-import {NavLink} from 'react-router-dom';
+import Box from "@mui/material/Box";
+import { Button } from "@mui/material";
+import { NavLink } from "react-router-dom";
 
 const DefaultMenu = () => {
   return (
-    <div style={{display: 'flex', alignItems: 'center', gap: 30,}}>
+    <div style={{ display: "flex", alignItems: "center", gap: 30 }}>
       <Box>
-        <Button component={NavLink} to="/register" color="inherit" variant="outlined">
+        <Button
+          component={NavLink}
+          to="/register"
+          color="inherit"
+          variant="outlined"
+        >
           Зарегистрироваться
         </Button>
       </Box>
       <Box>
-        <Button component={NavLink} to="/login" color="inherit" variant="contained">
+        <Button
+          component={NavLink}
+          to="/login"
+          color="inherit"
+          variant="contained"
+        >
           Войти
         </Button>
       </Box>

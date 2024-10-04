@@ -1,23 +1,23 @@
-import {Button, Card, CardContent, Typography} from '@mui/material';
-import {FC, useCallback,memo} from 'react';
-import {TrackI} from '../../../types.ts';
-import {useAppDispatch, useAppSelector} from '../../../app/hooks.ts';
-import {selectUser} from '../../User/UserSlice.ts';
-import PlayCircleOutlineOutlinedIcon from '@mui/icons-material/PlayCircleOutlineOutlined';
-import {addTrackToHistory} from '../../TrackHistory/TrackHistoryThunks.ts';
-import {deleteTrack, fetchTracks, patchTrack} from '../TracksThunks.ts';
+import { Button, Card, CardContent, Typography } from "@mui/material";
+import { FC, useCallback, memo } from "react";
+import { TrackI } from "../../../types.ts";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks.ts";
+import { selectUser } from "../../User/UserSlice.ts";
+import PlayCircleOutlineOutlinedIcon from "@mui/icons-material/PlayCircleOutlineOutlined";
+import { addTrackToHistory } from "../../TrackHistory/TrackHistoryThunks.ts";
+import { deleteTrack, fetchTracks, patchTrack } from "../TracksThunks.ts";
 
 interface Props {
   track: TrackI;
 }
 
-const TrackCard: FC<Props> = ({track}) => {
-  const dispatch = useAppDispatch()
-  const user = useAppSelector(selectUser)
+const TrackCard: FC<Props> = ({ track }) => {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
 
   const handleClick = useCallback(() => {
     if (user) {
-      dispatch(addTrackToHistory({track: track._id}));
+      dispatch(addTrackToHistory({ track: track._id }));
     }
   }, [user, track._id, dispatch]);
 
@@ -34,46 +34,48 @@ const TrackCard: FC<Props> = ({track}) => {
   return (
     <Card
       sx={{
-        backgroundColor: '#2c2c2c',
-        borderRadius: '8px',
-        width: '600px',
-        height: 'auto',
-        padding: '8px',
-        display: 'flex',
-        boxShadow: 'none',
-        margin: '8px 0',
+        backgroundColor: "#2c2c2c",
+        borderRadius: "8px",
+        width: "600px",
+        height: "auto",
+        padding: "8px",
+        display: "flex",
+        boxShadow: "none",
+        margin: "8px 0",
       }}
     >
-      <CardContent sx={{padding: '0', display: 'flex', width: '100%', marginTop: '20px'}}>
-        <div style={{flex: '0 0 10%', textAlign: 'center'}}>
+      <CardContent
+        sx={{ padding: "0", display: "flex", width: "100%", marginTop: "20px" }}
+      >
+        <div style={{ flex: "0 0 10%", textAlign: "center" }}>
           <Typography
             variant="subtitle1"
             sx={{
-              color: 'white',
+              color: "white",
               fontWeight: 600,
             }}
           >
             {track.track_number}
           </Typography>
         </div>
-        <div style={{flex: '1', overflow: 'hidden'}}>
+        <div style={{ flex: "1", overflow: "hidden" }}>
           <Typography
             variant="subtitle1"
             sx={{
-              color: 'white',
+              color: "white",
               fontWeight: 400,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
             }}
           >
             {track.title}
           </Typography>
-          {user?.role === 'admin' && !track.isPublished && (
+          {user?.role === "admin" && !track.isPublished && (
             <Typography
               variant="caption"
               sx={{
-                color: 'red',
+                color: "red",
                 fontWeight: 400,
               }}
             >
@@ -81,11 +83,11 @@ const TrackCard: FC<Props> = ({track}) => {
             </Typography>
           )}
         </div>
-        <div style={{flex: '0 0 20%',}}>
+        <div style={{ flex: "0 0 20%" }}>
           <Typography
             variant="subtitle1"
             sx={{
-              color: 'white',
+              color: "white",
               fontWeight: 400,
             }}
           >
@@ -93,24 +95,28 @@ const TrackCard: FC<Props> = ({track}) => {
           </Typography>
         </div>
         {user ? (
-          <Button onClick={handleClick}><PlayCircleOutlineOutlinedIcon
-            sx={{color: 'green', fontSize: '32px'}}/></Button>
+          <Button onClick={handleClick}>
+            <PlayCircleOutlineOutlinedIcon
+              sx={{ color: "green", fontSize: "32px" }}
+            />
+          </Button>
         ) : (
-          <p style={{display: 'none'}}></p>
+          <p style={{ display: "none" }}></p>
         )}
-        {user?.role === 'admin' && (
+        {user?.role === "admin" && (
           <>
             {track.isPublished ? (
               <Button
                 variant="outlined"
-                sx={{color: 'red', borderColor: 'red', marginTop: 'auto'}}
+                sx={{ color: "red", borderColor: "red", marginTop: "auto" }}
                 onClick={handleDelete}
-              >Удалить
+              >
+                Удалить
               </Button>
             ) : (
               <Button
                 variant="outlined"
-                sx={{color: 'green', borderColor: 'green', marginTop: 'auto',}}
+                sx={{ color: "green", borderColor: "green", marginTop: "auto" }}
                 onClick={handlePatch}
               >
                 Опубликовать

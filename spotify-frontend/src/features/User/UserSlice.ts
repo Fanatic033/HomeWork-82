@@ -1,13 +1,16 @@
+import {GlobalError, User, ValidationError} from '../../types';
 import {createSlice} from '@reduxjs/toolkit';
-import {GlobalError, User, ValidationError} from '../../types.ts';
+import {RootState} from '../../app/store';
 import {googleLogin, login, register} from './UserThunks.ts';
+
 
 interface UsersState {
   user: User | null;
   registerLoading: boolean;
   registerError: ValidationError | null;
   loginLoading: boolean;
-  loginError: GlobalError | null;
+  loginError: GlobalError | null
+  logoutLoading: boolean;
 }
 
 const initialState: UsersState = {
@@ -16,75 +19,66 @@ const initialState: UsersState = {
   registerError: null,
   loginLoading: false,
   loginError: null,
+  logoutLoading: false,
 };
 
 export const usersSlice = createSlice({
-  extraReducers: (builder) => {
-    builder
-      .addCase(register.pending, (state) => {
-        state.registerLoading = true;
-        state.registerError = null;
-      })
-      .addCase(register.fulfilled, (state, {payload: user}) => {
-        state.registerLoading = false;
-        state.user = user;
-      })
-      .addCase(register.rejected, (state, {payload: error}) => {
-        state.registerLoading = false;
-        state.registerError = error || null;
-      });
-    builder
-      .addCase(login.pending, (state) => {
-        state.loginLoading = true;
-        state.loginError = null;
-      })
-      .addCase(login.fulfilled, (state, {payload: user}) => {
-        state.loginLoading = false;
-        state.user = user
-      })
-      .addCase(login.rejected, (state, {payload: error}) => {
-        state.loginLoading = false;
-        state.loginError = error || null;
-        builder
-          .addCase(googleLogin.pending, (state) => {
-            state.loginLoading = true;
-            state.loginError = null;
-          })
-          .addCase(googleLogin.fulfilled, (state, payload) => {
-            state.loginLoading = false;
-            state.user = payload.payload;
-          })
-          .addCase(googleLogin.rejected, (state, {payload: error}) => {
-            state.loginLoading = false;
-            state.loginError = error || null;
-          });
-      });
-  },
-  initialState,
   name: 'users',
+  initialState,
   reducers: {
     unsetUser: (state) => {
       state.user = null;
-    },
+    }
   },
-  selectors: {
-    selectUser: (state) => state.user,
-    selectRegisterLoading: (state) => state.registerLoading,
-    selectRegisterError: (state) => state.registerError,
-    selectLoginLoading: (state) => state.loginLoading,
-    selectLoginError: (state) => state.loginError
+  extraReducers: (builder) => {
+    builder.addCase(register.pending, (state) => {
+      state.registerError = null;
+      state.registerLoading = true;
+    });
+    builder.addCase(register.fulfilled, (state, {payload: user}) => {
+      state.registerLoading = false;
+      state.user = user;
+    })
+    builder.addCase(register.rejected, (state, {payload: error}) => {
+      state.registerLoading = false;
+      state.registerError = error || null;
+    });
 
-  },
+    builder.addCase(login.pending, (state) => {
+      state.loginError = null;
+      state.loginLoading = true;
+    });
+    builder.addCase(login.fulfilled, (state, {payload: user}) => {
+      state.loginLoading = false;
+      state.user = user;
+    })
+    builder.addCase(login.rejected, (state, {payload: error}) => {
+      state.loginLoading = false;
+      state.loginError = error || null;
+    });
+
+    builder.addCase(googleLogin.pending, (state) => {
+      state.loginLoading = true;
+    });
+    builder.addCase(googleLogin.fulfilled, (state, {payload: user}) => {
+      state.loginLoading = false;
+      state.user = user;
+    });
+    builder.addCase(googleLogin.rejected, (state, {payload: error}) => {
+      state.loginLoading = false;
+      state.loginError = error || null;
+    });
+  }
 });
 
 export const usersReducer = usersSlice.reducer;
+export const {unsetUser} = usersSlice.actions;
 
-export const {
-  selectUser,
-  selectRegisterLoading,
-  selectRegisterError,
-  selectLoginLoading,
-  selectLoginError
-} = usersSlice.selectors;
+export const selectUser = (state: RootState) => state.users.user;
+export const selectRegisterLoading = (state: RootState) => state.users.registerLoading;
+export const selectRegisterError = (state: RootState) => state.users.registerError;
+export const selectLoginLoading = (state: RootState) => state.users.loginLoading;
+export const selectLoginError = (state: RootState) => state.users.loginError;
+export const selectLogoutLoading = (state: RootState) => state.users.logoutLoading;
 
-export const {unsetUser} = usersSlice.actions
+

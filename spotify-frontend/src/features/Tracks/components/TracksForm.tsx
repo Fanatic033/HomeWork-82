@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {CircularProgress, MenuItem, TextField} from '@mui/material';
-import {LoadingButton} from '@mui/lab';
-import SaveIcon from '@mui/icons-material/Save';
-import {useAppDispatch, useAppSelector} from '../../../app/hooks.ts';
-import {mutationTrack} from '../../../types.ts';
-import {fetchArtist} from '../../Artist/ArtistThunks.ts';
-import {selectAlbum, selectFetching} from '../../Album/AlbumSlice.ts';
+import React, { useEffect, useState } from "react";
+import { CircularProgress, MenuItem, TextField } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import SaveIcon from "@mui/icons-material/Save";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks.ts";
+import { mutationTrack } from "../../../types.ts";
+import { fetchArtist } from "../../Artist/ArtistThunks.ts";
+import { selectAlbum, selectFetching } from "../../Album/AlbumSlice.ts";
 
 interface Props {
   onSubmit: (track: mutationTrack) => void;
@@ -14,59 +14,58 @@ interface Props {
 
 const styles = {
   formGroup: {
-    marginBottom: '16px',
-  }
-}
+    marginBottom: "16px",
+  },
+};
 
-const ProductForm: React.FC<Props> = ({onSubmit, isLoading}) => {
-
+const ProductForm: React.FC<Props> = ({ onSubmit, isLoading }) => {
   const dispatch = useAppDispatch();
   const albums = useAppSelector(selectAlbum);
-  const albumFetching = useAppSelector(selectFetching)
-
+  const albumFetching = useAppSelector(selectFetching);
 
   const [state, setState] = useState<mutationTrack>({
-    album: '',
-    title: '',
-    duration: '',
-    track_number: '',
+    album: "",
+    title: "",
+    duration: "",
+    track_number: "",
   });
 
-
   useEffect(() => {
-    dispatch(fetchArtist())
+    dispatch(fetchArtist());
   }, []);
 
   const submitFormHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    onSubmit({...state,});
+    onSubmit({ ...state });
   };
 
   const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = event.target;
+    const { name, value } = event.target;
     setState((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
 
-
   return (
-    <form onSubmit={submitFormHandler} style={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '16px',
-      maxWidth: '600px',
-      margin: '100px auto',
-      backgroundColor: '#ffffff',
-      padding: '44px',
-      borderRadius: '8px',
-      boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-      color: '#000',
-    }}>
+    <form
+      onSubmit={submitFormHandler}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "16px",
+        maxWidth: "600px",
+        margin: "100px auto",
+        backgroundColor: "#ffffff",
+        padding: "44px",
+        borderRadius: "8px",
+        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+        color: "#000",
+      }}
+    >
       <div style={styles.formGroup}>
         {albumFetching ? (
-          <CircularProgress/>
+          <CircularProgress />
         ) : (
           <TextField
             required
@@ -103,7 +102,7 @@ const ProductForm: React.FC<Props> = ({onSubmit, isLoading}) => {
       <div style={styles.formGroup}>
         <TextField
           required
-          type='number'
+          type="number"
           label="Track_number"
           id="track_number"
           name="track_number"
@@ -129,9 +128,9 @@ const ProductForm: React.FC<Props> = ({onSubmit, isLoading}) => {
           type="submit"
           loading={isLoading}
           loadingPosition="start"
-          startIcon={<SaveIcon/>}
+          startIcon={<SaveIcon />}
           variant="contained"
-          sx={{background: 'green'}}
+          sx={{ background: "green" }}
         >
           <span>Save</span>
         </LoadingButton>

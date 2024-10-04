@@ -19,7 +19,7 @@ export interface AlbumI {
     title: string;
     description: string;
     image: string | null;
-  }
+  };
   title: string;
   created_at: number;
   image: string | null;
@@ -43,8 +43,8 @@ export interface TrackI {
     artist: {
       _id: string;
       title: string;
-    }
-  }
+    };
+  };
   title: string;
   duration: string;
   track_number: number;
@@ -55,9 +55,8 @@ export interface mutationTrack {
   album: string;
   title: string;
   duration: string;
-  track_number: string,
+  track_number: string;
 }
-
 
 export interface RegisterMutation {
   username: string;
@@ -81,11 +80,11 @@ export interface User {
 }
 
 export interface TrackHistory {
-  track_id: string,
+  track_id: string;
   trackTitle: string;
   artist: {
     artistName: string;
-  },
+  };
   listenedAt: string;
 }
 
@@ -100,7 +99,6 @@ export interface ValidationError {
   name: string;
   _message: string;
 }
-
 
 export interface GlobalError {
   error: string;

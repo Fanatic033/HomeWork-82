@@ -5,10 +5,11 @@ import {auth, RequestWithUser} from '../middleware/auth';
 import {OAuth2Client} from 'google-auth-library';
 import config from '../config';
 import {imagesUpload} from '../multer';
+import crypto from 'crypto';
 
 
 const usersRouter = express.Router();
-const googleClient = new OAuth2Client(config.google.clientId);
+const client = new OAuth2Client(config.google.clientId);
 
 
 usersRouter.post('/', imagesUpload.single('avatar'), async (req, res, next) => {
@@ -65,42 +66,44 @@ usersRouter.delete('/sessions', auth, async (req: RequestWithUser, res, next) =>
     return next(error);
   }
 })
-
 usersRouter.post('/google', async (req, res, next) => {
   try {
-    const ticket = await googleClient.verifyIdToken({
+    const ticket = await client.verifyIdToken({
       idToken: req.body.credential,
       audience: config.google.clientId,
     });
     const payload = ticket.getPayload();
     if (!payload) {
-      return res.status(400).send({error: 'Google Login Error!'});
+      return res.status(400).send({error: 'Google login error!'});
     }
-    const email = payload.email;
+    const email = payload['email'];
+    const googleid = payload['sub'];
+    const displayName = payload['name'];
+    const avatar = payload['picture'];
+
     if (!email) {
-      return res.status(400).send({error: 'Not enough user data to continue!'});
+      return res.status(400).send({error: 'Not enough user data to continue'});
     }
-    const gId = payload.sub;
-    const avatar = payload.picture;
-    const displayName = payload.name;
-    let user = await User.findOne({googleID: gId});
+    let user = await User.findOne({googleID: googleid});
     if (!user) {
-      const newPassword = crypto.randomUUID();
       user = new User({
         username: email,
-        password: newPassword,
-        googleId: gId,
+        password: crypto.randomUUID(),
+        googleID: googleid,
         displayName,
         avatar,
       });
     }
     user.generateToken();
+
     await user.save();
+
     return res.send({message: 'Login with Google successful!', user});
-  } catch (error) {
-    return next(error);
+  } catch (e) {
+    return next(e);
   }
 });
+
 
 export default usersRouter;
 
